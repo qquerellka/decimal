@@ -5,6 +5,7 @@
 #include "../src/s21_decimal.h"
 // необходима тому же check.h, чтобы взять тот же пустой указатель NULL
 #include <stdlib.h>
+#include <string.h>
 // собственно подключение библиотеки для тестирования
 #include <check.h>
 
