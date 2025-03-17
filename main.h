@@ -50,4 +50,13 @@ int s21_round(s21_decimal value, s21_decimal *result);
 int s21_truncate(s21_decimal value, s21_decimal *result);
 int s21_negate(s21_decimal value, s21_decimal *result);
 
+
+// Вспомогательные функции 
+int s21_get_scale(const s21_decimal *decimal);
+void s21_set_scale(s21_decimal *decimal, int scale);
+int s21_get_sign(s21_decimal *decimal);
+void s21_set_sign(s21_decimal *decimal, int sign);
+int s21_is_overflow(s21_decimal value);
+int s21_is_greater(s21_decimal a, s21_decimal b);
+
 #endif
