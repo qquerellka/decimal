@@ -8,7 +8,7 @@ TEST_FLAGS = -lcheck -lm -lsubunit
 LIB = -L. -l:s21_decimal.a
 GCOV_FLAGS = -fprofile-arcs -ftest-coverage
 BRANCHES = --rc lcov_branch_coverage=1
-GCOV_REPORT_DIR = gcov_report
+GCOV_REPORT_DIR = ../gcov_report
 TESTS_DIR = ../tests
 TEST_PROGRAM = $(TESTS_DIR)/check_s21_decimal
 
