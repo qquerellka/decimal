@@ -45,7 +45,7 @@ int s21_is_greater(s21_decimal a, s21_decimal b) {
 
 int s21_from_int_to_decimal(int src, s21_decimal *dst) {
   if (dst == NULL) {
-    return S21_FALSE;
+    return S21_ERROR_CONVERT;
   }
   dst->bits[0] = abs(src);
   dst->bits[2] = dst->bits[1] = 0;
@@ -57,7 +57,7 @@ int s21_from_int_to_decimal(int src, s21_decimal *dst) {
 int s21_from_float_to_decimal(float src, s21_decimal *dst) {
   if (dst == NULL || isnan(src) || isinf(src) || src >= S21_MAX ||
       src <= S21_MIN) {
-    return S21_FALSE;
+    return S21_ERROR_CONVERT;
   }
   dst->bits[0] = dst->bits[1] = dst->bits[2] = dst->bits[3] = 0;
 
@@ -84,7 +84,7 @@ int s21_from_float_to_decimal(float src, s21_decimal *dst) {
 
 int s21_from_decimal_to_int(s21_decimal src, int *dst) {
   if (dst == NULL) {
-    return S21_FALSE;
+    return S21_ERROR_CONVERT;
   }
   int scale = s21_get_scale(&src);
   long long mantissa = (long long)src.bits[0] | ((long long)src.bits[1] << 32);
@@ -96,7 +96,7 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
     mantissa = -mantissa;
   }
   if (mantissa > INT_MAX || mantissa < INT_MIN) {
-    return S21_FALSE;
+    return S21_ERROR_CONVERT;
   }
   *dst = (int)mantissa;
   return S21_OK;
@@ -104,7 +104,7 @@ int s21_from_decimal_to_int(s21_decimal src, int *dst) {
 
 int s21_from_decimal_to_float(s21_decimal src, float *dst) {
   if (dst == NULL) {
-    return S21_FALSE;
+    return S21_ERROR_CONVERT;
   }
   int scale = s21_get_scale(&src);
   long long mantissa = (long long)src.bits[0] | ((long long)src.bits[1] << 32);
@@ -118,7 +118,7 @@ int s21_from_decimal_to_float(s21_decimal src, float *dst) {
 }
 
 int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  if (!result) return S21_FALSE;
+  if (!result) return S21_ERROR_CONVERT;
   *result = (s21_decimal){0};
 
   int sign1 = s21_get_sign(&value_1);
@@ -149,7 +149,7 @@ int s21_add(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
 }
 
 int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
-  if (!result) return S21_FALSE;
+  if (!result) return S21_ERROR_CONVERT;
   *result = (s21_decimal){0};
 
   int sign1 = s21_get_sign(&value_1);
@@ -238,15 +238,15 @@ int main() {
   printf("Result: {%d, %d, %d, %d}, Code: %d\n", result_1.bits[0],
          result_1.bits[1], result_1.bits[2], result_1.bits[3], code_1);
 
-  s21_decimal ag = {{100, 0, 0, 0}};      
-  s21_decimal bg = {{50, 0, 0, 1 << 31}};  
+  s21_decimal ag = {{100, 0, 0, 0}};
+  s21_decimal bg = {{50, 0, 0, 1 << 31}};
   s21_decimal result_2;
   int code_2 = s21_add(ag, bg, &result_2);
 
   printf("Result: {%d, %d, %d, %d}, Code: %d\n", result_2.bits[0],
          result_2.bits[1], result_2.bits[2], result_2.bits[3], code_2);
 
-  s21_decimal al = {{200, 0, 0, 1 << 31}};  
+  s21_decimal al = {{200, 0, 0, 1 << 31}};
   s21_decimal bl = {{300, 0, 0, 1 << 31}};
   s21_decimal result_3;
   int code_3 = s21_add(al, bl, &result_3);
@@ -269,38 +269,36 @@ int main() {
 
   printf("Code: %d\n", code_5);
 
-  s21_decimal ag1 = {{500, 0, 0, 0}};  
-  s21_decimal bg1 = {{200, 0, 0, 0}}; 
+  s21_decimal ag1 = {{500, 0, 0, 0}};
+  s21_decimal bg1 = {{200, 0, 0, 0}};
   s21_decimal result_6;
   int code_6 = s21_sub(ag1, bg1, &result_6);
   printf("Result: {%d, %d, %d, %d}, Code: %d\n", result_6.bits[0],
          result_6.bits[1], result_6.bits[2], result_6.bits[3], code_6);
 
-  s21_decimal ag2 = {{500, 0, 0, 0}};        
-  s21_decimal bg2 = {{300, 0, 0, 1 << 31}}; 
+  s21_decimal ag2 = {{500, 0, 0, 0}};
+  s21_decimal bg2 = {{300, 0, 0, 1 << 31}};
   s21_decimal result_7;
   int code_7 = s21_sub(ag2, bg2, &result_7);
   printf("Result: {%d, %d, %d, %d}, Code: %d\n", result_7.bits[0],
          result_7.bits[1], result_7.bits[2], result_7.bits[3], code_7);
 
-  s21_decimal ag3 = {
-      {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0}}; 
+  s21_decimal ag3 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0}};
   s21_decimal bg3 = {{1, 0, 0, 0}};
   s21_decimal result_8;
   int code_8 = s21_sub(ag3, bg3, &result_8);
   printf("Result: {%d, %d, %d, %d}, Code: %d\n", result_8.bits[0],
          result_8.bits[1], result_8.bits[2], result_8.bits[3], code_8);
 
-  s21_decimal ag4 = {{1, 0, 0, 1 << 31}};  
-  s21_decimal bg4 = {
-      {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0}}; 
+  s21_decimal ag4 = {{1, 0, 0, 1 << 31}};
+  s21_decimal bg4 = {{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0}};
   s21_decimal result_9;
   int code_9 = s21_sub(ag4, bg4, &result_9);
   printf("Result: {%d, %d, %d, %d}, Code: %d\n", result_9.bits[0],
          result_9.bits[1], result_9.bits[2], result_9.bits[3], code_9);
 
-  s21_decimal ag5 = {{1000, 0, 0, 0}};  
-  s21_decimal bg5 = {{50, 0, 0, 0}}; 
+  s21_decimal ag5 = {{1000, 0, 0, 0}};
+  s21_decimal bg5 = {{50, 0, 0, 0}};
   s21_decimal result_10;
   int code_10 = s21_sub(ag5, bg5, &result_10);
   printf("Result: {%d, %d, %d, %d}, Code: %d\n", result_10.bits[0],

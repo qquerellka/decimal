@@ -16,10 +16,10 @@ typedef struct {
 
 enum enum_error {
   S21_OK = 0,
-  S21_FALSE = 1,
-  S21_NUMBER_INF = 1,
+  S21_FALSE = 0,
   S21_TRUE = 1,
   S21_ERROR_CONVERT = 1,
+  S21_NUMBER_INF = 1,
   S21_NUMBER_MIN_INF = 2,
   S21_DEV_BY_ZERO = 3
 };
