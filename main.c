@@ -37,10 +37,10 @@ int s21_is_overflow(s21_decimal value) {
 
 int s21_is_greater(s21_decimal a, s21_decimal b) {
   for (int i = 2; i >= 0; i--) {
-    if (a.bits[i] > b.bits[i]) return 1;
-    if (a.bits[i] < b.bits[i]) return 0;
+    if (a.bits[i] > b.bits[i]) return S21_TRUE;
+    if (a.bits[i] < b.bits[i]) return S21_FALSE;
   }
-  return 0;
+  return S21_FALSE;
 }
 
 int s21_from_int_to_decimal(int src, s21_decimal *dst) {
@@ -287,7 +287,7 @@ int main() {
   s21_decimal bg3 = {{1, 0, 0, 0}};
   s21_decimal result_8;
   int code_8 = s21_sub(ag3, bg3, &result_8);
-  printf("Result: {%d, %d, %d, %d}, Code: %d\n", result_8.bits[0],
+  printf("Result: {%u, %u, %u, %u}, Code: %d\n", result_8.bits[0],
          result_8.bits[1], result_8.bits[2], result_8.bits[3], code_8);
 
   s21_decimal ag4 = {{1, 0, 0, 1 << 31}};
