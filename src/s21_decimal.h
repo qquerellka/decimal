@@ -2,10 +2,10 @@
 #define S21_DECIMAL_H
 
 #include <limits.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #define S21_MAX 79228162514264337593543950335.0F
 #define S21_MIN -79228162514264337593543950335.0F
@@ -50,11 +50,16 @@ int s21_round(s21_decimal value, s21_decimal *result);
 int s21_truncate(s21_decimal value, s21_decimal *result);
 int s21_negate(s21_decimal value, s21_decimal *result);
 
-// Вспомогательные функции
+
+// Вспомогательные функции 
 int s21_get_scale(const s21_decimal *decimal);
 void s21_set_scale(s21_decimal *decimal, int scale);
 int s21_get_sign(s21_decimal *decimal);
 void s21_set_sign(s21_decimal *decimal, int sign);
 int s21_is_overflow(s21_decimal value);
+void s21_initDecimal(int num3, int num2, int num1, int num0, s21_decimal *num);
+int s21_is_zero(s21_decimal *value);
+int s21_mul_by_10(s21_decimal *value);
+int s21_normalize(s21_decimal *value_1, s21_decimal *value_2);
 
 #endif
