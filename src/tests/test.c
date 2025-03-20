@@ -118,8 +118,8 @@ s21_decimal test92 = {{0b00000000000000000000000001111011, ZeroBits, ZeroBits,
 s21_decimal res9 = {{0b00000000000000000001010010111011, ZeroBits, ZeroBits,
                      0b00000000000000100000000000000000}};  // 53.07
 
-s21_decimal test101 = {{500, 0, 0, 0}};        
-s21_decimal test102 = {{300, 0, 0, 1 << 31}}; 
+s21_decimal test101 = {{500, 0, 0, 0}};
+s21_decimal test102 = {{300, 0, 0, 1 << 31}};
 s21_decimal res10 = {{800, 0, 0, 0}};  // -928.63316497
 
 s21_decimal test111 = {{MaxInt, ZeroBits, ZeroBits, OneAt31}};
@@ -153,12 +153,12 @@ START_TEST(add) {
   s21_initDecimal(ZeroBits, ZeroBits, ZeroBits, ZeroBits, &temp_res);
 
   overload = s21_add(test61, test62, &temp_res);
-  ck_assert_int_eq(0, s21_is_equal(res6, temp_res));
+  ck_assert_int_eq(1, s21_is_equal(res6, temp_res));
   ck_assert_int_eq(2, overload);
   s21_initDecimal(ZeroBits, ZeroBits, ZeroBits, ZeroBits, &temp_res);
 
   overload = s21_add(test71, test72, &temp_res);
-  ck_assert_int_eq(0, s21_is_equal(res7, temp_res));
+  ck_assert_int_eq(1, s21_is_equal(res7, temp_res));
   ck_assert_int_eq(0, overload);
   s21_initDecimal(ZeroBits, ZeroBits, ZeroBits, ZeroBits, &temp_res);
 }
@@ -260,7 +260,6 @@ START_TEST(mul) {
 }
 END_TEST
 
-
 /*
 START_TEST(div) {
   int output = s21_div(max, middle, &temp_res);
@@ -299,9 +298,6 @@ START_TEST(from_int_to_decimal_decimal_to_int) {
 }
 END_TEST
 
-
-// ======== функции надо бы переделать ==================
-
 // START_TEST(from_float_to_decimal_decimal_to_float) {
 //   float res = 0;
 //   float temp_plus = 2147483.647;
@@ -329,45 +325,44 @@ END_TEST
 // END_TEST
 
 START_TEST(from_float_to_decimal_decimal_to_float) {
-    float res = 0;
-    float temp_plus = 2147483.647;
-    float temp_minus = -2147483.647;
-    float res_plus = 2147484.0;
-    float res_minus = -2147484.0;
-  
-    int output = s21_from_float_to_decimal(temp_plus, &temp_res);
-    ck_assert_int_eq(0, output);
-    output = s21_from_decimal_to_float(temp_res, &res);
-  
-    ck_assert(fabs(res_plus - res) < 1.0); 
-    ck_assert_int_eq(0, output);
-  
-    output = s21_from_float_to_decimal(temp_minus, &temp_res);
-    ck_assert_int_eq(0, output);
-    output = s21_from_decimal_to_float(temp_res, &res);
-    ck_assert(fabs(res_minus - res) < 1.0);  
-    ck_assert_int_eq(0, output);
-  
-    // output = s21_from_float_to_decimal((temp_plus * 10), &temp_res);
-    // ck_assert_int_eq(1, s21_is_equal(res_from_float_to_decimal, temp_res));
-    // ck_assert_int_eq(0, output);
-  
-    // output = s21_from_decimal_to_float(tmp_float, &res);
-    // ck_assert(fabs(21474840.0 - res) < 1.0);  
-    // ck_assert_int_eq(0, output);
-  }
+  float res = 0;
+  float temp_plus = 2147483.647;
+  float temp_minus = -2147483.647;
+  float res_plus = 2147484.0;
+  float res_minus = -2147484.0;
+
+  int output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+
+  // Погрешность увеличена до 1.0 для более точных сравнений
+  ck_assert(fabs(res_plus - res) < 1.0);  // Увеличиваем допустимую погрешность
+  ck_assert_int_eq(0, output);
+
+  output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+  ck_assert(fabs(res_minus - res) < 1.0);  // Увеличиваем допустимую погрешность
+  ck_assert_int_eq(0, output);
+
+  // output = s21_from_float_to_decimal((temp_plus * 10), &temp_res);
+  // ck_assert_int_eq(1, s21_is_equal(res_from_float_to_decimal, temp_res));
+  // ck_assert_int_eq(0, output);
+
+  // output = s21_from_decimal_to_float(tmp_float, &res);
+  // ck_assert(fabs(21474840.0 - res) < 1.0);  // Увеличиваем допустимую
+  // погрешность ck_assert_int_eq(0, output);
+}
 END_TEST
-// ====================================
 
 // START_TEST(floor_) {
 //   int output = s21_floor(middle_fractions, &temp_res);
 //   ck_assert_int_eq(1, s21_is_equal(res_floor_middle_fractions, temp_res));
 //   ck_assert_int_eq(0, output);
 //   output = s21_floor(middle_fractions_minus, &temp_res);
-//   ck_assert_int_eq(1, s21_is_equal(res_floor_middle_fractions_minus, temp_res));
-//   ck_assert_int_eq(0, output);
-//   output = s21_floor(floor_num, &temp_res);
-//   ck_assert_int_eq(1, s21_is_equal(res_floor, temp_res));
+//   ck_assert_int_eq(1, s21_is_equal(res_floor_middle_fractions_minus,
+//   temp_res)); ck_assert_int_eq(0, output); output = s21_floor(floor_num,
+//   &temp_res); ck_assert_int_eq(1, s21_is_equal(res_floor, temp_res));
 //   ck_assert_int_eq(0, output);
 // }
 // END_TEST
@@ -377,10 +372,9 @@ END_TEST
 //   ck_assert_int_eq(1, s21_is_equal(res_floor_middle_fractions, temp_res));
 //   ck_assert_int_eq(0, output);
 //   output = s21_round(middle_fractions_minus, &temp_res);
-//   ck_assert_int_eq(1, s21_is_equal(res_round_middle_fractions_minus, temp_res));
-//   ck_assert_int_eq(0, output);
-//   output = s21_round(round_num, &temp_res);
-//   ck_assert_int_eq(1, s21_is_equal(res_round, temp_res));
+//   ck_assert_int_eq(1, s21_is_equal(res_round_middle_fractions_minus,
+//   temp_res)); ck_assert_int_eq(0, output); output = s21_round(round_num,
+//   &temp_res); ck_assert_int_eq(1, s21_is_equal(res_round, temp_res));
 //   ck_assert_int_eq(0, output);
 // }
 // END_TEST
@@ -390,8 +384,8 @@ END_TEST
 //   ck_assert_int_eq(1, s21_is_equal(res_floor_middle_fractions, temp_res));
 //   ck_assert_int_eq(0, output);
 //   output = s21_truncate(middle_fractions_minus, &temp_res);
-//   ck_assert_int_eq(1, s21_is_equal(res_round_middle_fractions_minus, temp_res));
-//   ck_assert_int_eq(0, output);
+//   ck_assert_int_eq(1, s21_is_equal(res_round_middle_fractions_minus,
+//   temp_res)); ck_assert_int_eq(0, output);
 // }
 // END_TEST
 
@@ -415,15 +409,15 @@ int main() {
   tcase_add_test(tc, sub);
   tcase_add_test(tc, mul);
   //   tcase_add_test(tc, div);
-//   tcase_add_test(tc, floor_);
-//   tcase_add_test(tc, round_);
-//   tcase_add_test(tc, negate);
-//   tcase_add_test(tc, truncate);
-//   tcase_add_test(tc, is_less);
+  //   tcase_add_test(tc, floor_);
+  //   tcase_add_test(tc, round_);
+  //   tcase_add_test(tc, negate);
+  //   tcase_add_test(tc, truncate);
+  //   tcase_add_test(tc, is_less);
   tcase_add_test(tc, is_equal);
   tcase_add_test(tc, is_greater);
-//   tcase_add_test(tc, is_not_equal);
-//   tcase_add_test(tc, is_less_or_equal);
+  //   tcase_add_test(tc, is_not_equal);
+  //   tcase_add_test(tc, is_less_or_equal);
   //   tcase_add_test(tc, is_greater_or_equal);
   tcase_add_test(tc, from_int_to_decimal_decimal_to_int);
   tcase_add_test(tc, from_float_to_decimal_decimal_to_float);

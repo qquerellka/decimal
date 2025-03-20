@@ -25,8 +25,6 @@ void s21_set_sign(s21_decimal *decimal, int sign) {
   }
 }
 
-
-
 void s21_initDecimal(int num3, int num2, int num1, int num0, s21_decimal *num) {
   num->bits[3] = num3;
   num->bits[2] = num2;
@@ -43,37 +41,37 @@ int s21_mul_by_10(s21_decimal *value) {
   uint64_t carry = 0;
 
   for (int i = 0; i < 3; i++) {
-      temp = (uint64_t)value->bits[i] * 10 + carry;
-      value->bits[i] = (uint32_t)(temp & 0xFFFFFFFF);
-      carry = temp >> 32;
+    temp = (uint64_t)value->bits[i] * 10 + carry;
+    value->bits[i] = (uint32_t)(temp & 0xFFFFFFFF);
+    carry = temp >> 32;
   }
 
   if (carry) {
-      return 0;  
+    return 0;
   }
 
   int scale = (value->bits[3] >> 16) & 0xFF;
   if (scale < 28) {
-      value->bits[3] &= ~(0xFF << 16);  // Очистка scale
-      value->bits[3] |= (scale + 1) << 16;  // Запись нового scale
+    value->bits[3] &= ~(0xFF << 16);      // Очистка scale
+    value->bits[3] |= (scale + 1) << 16;  // Запись нового scale
   } else {
-      return 0; 
+    return 0;
   }
 
-  return 1; 
+  return 1;
 }
 
 int s21_normalize(s21_decimal *value_1, s21_decimal *value_2) {
   int scale1 = s21_get_scale(value_1);
   int scale2 = s21_get_scale(value_2);
-  
+
   while (scale1 < scale2) {
-      if (!s21_mul_by_10(value_1)) return 0;
-      scale1++;
+    if (!s21_mul_by_10(value_1)) return 0;
+    scale1++;
   }
   while (scale2 < scale1) {
-      if (!s21_mul_by_10(value_2)) return 0;
-      scale2++;
+    if (!s21_mul_by_10(value_2)) return 0;
+    scale2++;
   }
   return 1;
 }
