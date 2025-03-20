@@ -211,6 +211,8 @@ START_TEST(is_greater) {
   ck_assert_int_eq(0, s21_is_greater(middle, max_minus));
   ck_assert_int_eq(1, s21_is_greater(max, middle_minus));
   ck_assert_int_eq(0, s21_is_greater(null, middle_minus));
+  ck_assert_int_eq(0, s21_is_greater(middle, middle));
+  ck_assert_int_eq(0, s21_is_greater(max, max));
 }
 END_TEST
 
@@ -295,6 +297,9 @@ START_TEST(from_int_to_decimal_decimal_to_int) {
   output = s21_from_decimal_to_int(temp_res, &res);
   ck_assert_int_eq(temp_minus, res);
   ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_int(temp_res, NULL);
+  ck_assert_int_eq(temp_minus, res);
+  ck_assert_int_eq(1, output);
 }
 END_TEST
 
