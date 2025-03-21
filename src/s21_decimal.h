@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <stdint.h>
 #define S21_MAX 79228162514264337593543950335.0F
 #define S21_MIN -79228162514264337593543950335.0F
 
