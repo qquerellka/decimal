@@ -1,6 +1,6 @@
 #include "s21_decimal.h"
 
-int s21_is_greater(s21_decimal value1, s21_decimal value2) {
+int s21_is_greater_or_equal(s21_decimal value1, s21_decimal value2) {
   int sign1 = s21_get_sign(&value1);
   int sign2 = s21_get_sign(&value2);
 
@@ -11,7 +11,7 @@ int s21_is_greater(s21_decimal value1, s21_decimal value2) {
   s21_normalize(&value1, &value2);
 
   if (s21_is_equal(value1, value2)) {
-      return S21_FALSE;
+      return S21_TRUE;
   }
 
   for (int i = 2; i >= 0; i--) {

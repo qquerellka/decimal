@@ -32,7 +32,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 
 // Операторы сравнения
 int s21_is_less(s21_decimal, s21_decimal);
-int s21_is_less_or_equal(s21_decimal, s21_decimal);
+int s21_is_less_or_equal(s21_decimal value1, s21_decimal value_2);
 int s21_is_greater(s21_decimal a, s21_decimal b);
 int s21_is_greater_or_equal(s21_decimal, s21_decimal);
 int s21_is_equal(s21_decimal, s21_decimal);

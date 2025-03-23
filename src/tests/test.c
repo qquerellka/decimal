@@ -205,16 +205,16 @@ END_TEST
 // }
 // END_TEST
 
-START_TEST(is_greater) {
-  ck_assert_int_eq(1, s21_is_greater(middle, null));
-  ck_assert_int_eq(0, s21_is_greater(middle, max));
-  ck_assert_int_eq(0, s21_is_greater(middle, max_minus));
-  ck_assert_int_eq(1, s21_is_greater(max, middle_minus));
-  ck_assert_int_eq(0, s21_is_greater(null, middle_minus));
-  ck_assert_int_eq(0, s21_is_greater(middle, middle));
-  ck_assert_int_eq(0, s21_is_greater(max, max));
-}
-END_TEST
+// START_TEST(is_greater) {
+//   ck_assert_int_eq(1, s21_is_greater(middle, null));
+//   ck_assert_int_eq(0, s21_is_greater(middle, max));
+//   ck_assert_int_eq(0, s21_is_greater(middle, max_minus));
+//   ck_assert_int_eq(1, s21_is_greater(max, middle_minus));
+//   ck_assert_int_eq(0, s21_is_greater(null, middle_minus));
+//   ck_assert_int_eq(0, s21_is_greater(middle, middle));
+//   ck_assert_int_eq(0, s21_is_greater(max, max));
+// }
+// END_TEST
 
 /*
 START_TEST(is_greater_or_equal) {
@@ -227,12 +227,12 @@ START_TEST(is_greater_or_equal) {
 END_TEST
 */
 
-START_TEST(is_equal) {
-  ck_assert_int_eq(0, s21_is_equal(middle, max));
-  ck_assert_int_eq(0, s21_is_equal(middle, middle_fractions));
-  ck_assert_int_eq(1, s21_is_equal(null, null_minus));
-}
-END_TEST
+// START_TEST(is_equal) {
+//   ck_assert_int_eq(0, s21_is_equal(middle, max));
+//   ck_assert_int_eq(0, s21_is_equal(middle, middle_fractions));
+//   ck_assert_int_eq(1, s21_is_equal(null, null_minus));
+// }
+// END_TEST
 
 // START_TEST(is_not_equal) {
 //   ck_assert_int_eq(1, s21_is_not_equal(middle, middle_fractions));
@@ -404,6 +404,314 @@ END_TEST
 // }
 // END_TEST
 
+START_TEST(is_equal) {
+  int value1 = 111111;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1==value2, s21_is_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_equal_float) {
+  double value1 = 111111.111;
+  double value2 = 111111.111;
+  s21_decimal dec_value1; s21_from_float_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_float_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1==value2, s21_is_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_equal_not) {
+  int value1 = 111111;
+  int value2 = 222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1==value2, s21_is_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+// START_TEST(is_equal_float_not) {
+//   double value1 = 111111.111;
+//   double value2 = 111111.1111;
+//   s21_decimal dec_value1; s21_from_float_to_decimal(value1, &dec_value1);
+//   s21_decimal dec_value2; s21_from_float_to_decimal(value2, &dec_value2);
+//   ck_assert_int_eq(value1==value2, s21_is_equal(dec_value1, dec_value2));
+// }
+// END_TEST
+
+START_TEST(is_equal_minus) {
+  int value1 = 111111;
+  int value2 = -111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1==value2, s21_is_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+
+
+
+
+
+START_TEST(is_greater) {
+  int value1 = 111111;
+  int value2 = 222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value1>value2, s21_is_greater(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_not) {
+  int value1 = 222222;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value1>value2, s21_is_greater(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_two_minus) {
+  int value1 = -111111;
+  int value2 = -222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value1>value2, s21_is_greater(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_one_minus) {
+  int value1 = 111111;
+  int value2 = -222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value1>value2, s21_is_greater(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_one_minus_rev) {
+  int value1 = 111111;
+  int value2 = -222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value2>value1, s21_is_greater(dec_value2, dec_value1));
+}
+END_TEST
+
+START_TEST(is_greater_equal) {
+  int value1 = 111111;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value1>value2, s21_is_greater(dec_value1, dec_value2));
+}
+END_TEST
+
+/////////////////////////////////////////////////////////////////////
+
+START_TEST(is_greater_or_equal) {
+  int value1 = 111111;
+  int value2 = 222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 >= value2, s21_is_greater_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_or_equal_not) {
+  int value1 = 222222;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 >= value2, s21_is_greater_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_or_equal_equal) {
+  int value1 = 111111;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 >= value2, s21_is_greater_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_or_equal_one_minus_true) {
+  int value1 = -111111;
+  int value2 = 222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 >= value2, s21_is_greater_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_or_equal_one_minus_false) {
+  int value1 = 111111;
+  int value2 = -222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 >= value2, s21_is_greater_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_or_equal_one_minus) {
+  int value1 = -222222;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 >= value2, s21_is_greater_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_or_equal_one_minus_rev) {
+  int value1 = 222222;
+  int value2 = -111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 >= value2, s21_is_greater_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_greater_or_equal_minus_equal) {
+  int value1 = -111111;
+  int value2 = -111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 >= value2, s21_is_greater_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+///////////////////////////////////////////////////////////////////
+
+START_TEST(is_less) {
+  int value1 = 111111;
+  int value2 = 222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value1<value2, s21_is_less(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_not) {
+  int value1 = 222222;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value1<value2, s21_is_less(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_two_minus) {
+  int value1 = -111111;
+  int value2 = -222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value1<value2, s21_is_less(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_one_minus) {
+  int value1 = 111111;
+  int value2 = -222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value1<value2, s21_is_less(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_one_minus_rev) {
+  int value1 = 111111;
+  int value2 = -222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value2<value1, s21_is_less(dec_value2, dec_value1));
+}
+END_TEST
+
+START_TEST(is_less_equal) {
+  int value1 = 111111;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1,  &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2,  &dec_value2);
+  ck_assert_int_eq(value1<value2, s21_is_less(dec_value1, dec_value2));
+}
+END_TEST
+
+/////////////////////////////////////////////////////
+
+START_TEST(is_less_or_equal) {
+  int value1 = 111111;
+  int value2 = 222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 <= value2, s21_is_less_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_or_equal_not) {
+  int value1 = 222222;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 <= value2, s21_is_less_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_or_equal_equal) {
+  int value1 = 111111;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 <= value2, s21_is_less_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_or_equal_one_minus_true) {
+  int value1 = -111111;
+  int value2 = 222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 <= value2, s21_is_less_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_or_equal_one_minus_false) {
+  int value1 = 111111;
+  int value2 = -222222;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 <= value2, s21_is_less_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_or_equal_one_minus) {
+  int value1 = -222222;
+  int value2 = 111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 <= value2, s21_is_less_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_or_equal_one_minus_rev) {
+  int value1 = 222222;
+  int value2 = -111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 <= value2, s21_is_less_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
+START_TEST(is_less_or_equal_minus_equal) {
+  int value1 = -111111;
+  int value2 = -111111;
+  s21_decimal dec_value1; s21_from_int_to_decimal(value1, &dec_value1);
+  s21_decimal dec_value2; s21_from_int_to_decimal(value2, &dec_value2);
+  ck_assert_int_eq(value1 <= value2, s21_is_less_or_equal(dec_value1, dec_value2));
+}
+END_TEST
+
 int main() {
   Suite *s = suite_create("Suite");
   TCase *tc = tcase_create("Test case");
@@ -420,7 +728,7 @@ int main() {
   //   tcase_add_test(tc, truncate);
   //   tcase_add_test(tc, is_less);
   tcase_add_test(tc, is_equal);
-  tcase_add_test(tc, is_greater);
+  // tcase_add_test(tc, is_greater);
   //   tcase_add_test(tc, is_not_equal);
   //   tcase_add_test(tc, is_less_or_equal);
   //   tcase_add_test(tc, is_greater_or_equal);
@@ -428,6 +736,47 @@ int main() {
   tcase_add_test(tc, from_float_to_decimal_decimal_to_float);
   //   tcase_add_test(tc, from_decimal_to_float);
   //   tcase_add_test(tc, from_decimal_to_int);
+
+  tcase_add_test(tc, is_equal);
+  tcase_add_test(tc, is_equal_float);
+  tcase_add_test(tc, is_equal_not);
+  // tcase_add_test(tc, is_equal_float_not);
+  tcase_add_test(tc, is_equal_minus);
+
+
+  tcase_add_test(tc, is_greater);
+  tcase_add_test(tc, is_greater_not);
+  tcase_add_test(tc, is_greater_one_minus);
+  tcase_add_test(tc, is_greater_one_minus_rev);
+  tcase_add_test(tc, is_greater_equal);
+  tcase_add_test(tc, is_greater_two_minus);
+
+  tcase_add_test(tc, is_greater_or_equal);
+  tcase_add_test(tc, is_greater_or_equal_not);
+  tcase_add_test(tc, is_greater_or_equal_equal);
+  tcase_add_test(tc, is_greater_or_equal_one_minus_true);
+  tcase_add_test(tc, is_greater_or_equal_one_minus_false);  
+  tcase_add_test(tc, is_greater_or_equal_one_minus);
+  tcase_add_test(tc, is_greater_or_equal_one_minus_rev);
+  tcase_add_test(tc, is_greater_or_equal_minus_equal);
+
+  tcase_add_test(tc, is_less);
+  tcase_add_test(tc, is_less_not);
+  tcase_add_test(tc, is_less_one_minus);
+  tcase_add_test(tc, is_less_one_minus_rev);
+  tcase_add_test(tc, is_less_equal);
+  tcase_add_test(tc, is_less_two_minus);
+
+  tcase_add_test(tc, is_less_or_equal);
+  tcase_add_test(tc, is_less_or_equal_not);
+  tcase_add_test(tc, is_less_or_equal_equal);
+  tcase_add_test(tc, is_less_or_equal_one_minus_true);
+  tcase_add_test(tc, is_less_or_equal_one_minus_false);  
+  tcase_add_test(tc, is_less_or_equal_one_minus);
+  tcase_add_test(tc, is_less_or_equal_one_minus_rev);
+  tcase_add_test(tc, is_less_or_equal_minus_equal);
+
+
 
   srunner_run_all(sr, CK_VERBOSE);
   output = srunner_ntests_failed(sr);
