@@ -3,10 +3,11 @@
 
 #include <limits.h>
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdint.h>
+
 #define S21_MAX 79228162514264337593543950335.0F
 #define S21_MIN -79228162514264337593543950335.0F
 
@@ -33,7 +34,7 @@ int s21_div(s21_decimal value_1, s21_decimal value_2, s21_decimal *result);
 // Операторы сравнения
 int s21_is_less(s21_decimal, s21_decimal);
 int s21_is_less_or_equal(s21_decimal, s21_decimal);
-int s21_is_greater(s21_decimal a, s21_decimal b);
+int s21_is_greater(s21_decimal, s21_decimal);
 int s21_is_greater_or_equal(s21_decimal, s21_decimal);
 int s21_is_equal(s21_decimal, s21_decimal);
 int s21_is_not_equal(s21_decimal, s21_decimal);
@@ -55,9 +56,20 @@ int s21_get_scale(const s21_decimal *decimal);
 void s21_set_scale(s21_decimal *decimal, int scale);
 int s21_get_sign(s21_decimal *decimal);
 void s21_set_sign(s21_decimal *decimal, int sign);
-void s21_initDecimal(int num3, int num2, int num1, int num0, s21_decimal *num);
 int s21_is_zero(s21_decimal *value);
 int s21_mul_by_10(s21_decimal *value);
 int s21_normalize(s21_decimal *value_1, s21_decimal *value_2);
+// ===========================
+// void s21_shift_left_96(uint32_t num[3], int shift);
+// int s21_is_greater_or_equal_96(uint32_t num1[3], uint32_t num2[3]);
+// void s21_sub_96(uint32_t num1[3], uint32_t num2[3]);
+// void s21_set_bit_96(uint32_t num[3], int bit);
+// int s21_is_zero_96(uint32_t num[3]);
+// void s21_add_96(uint32_t num[3], uint32_t value);
+// void s21_multiply_by_10_96(uint32_t *quotient, uint32_t *remainder);
+//int s21_get_bit(unsigned value, unsigned bit);
+// =======================
+int s21_div_by_ten(s21_decimal *value);
+
 
 #endif
