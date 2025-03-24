@@ -52,12 +52,12 @@ endif
 	$(OPEN) report/index.html
 
 
-# style_check:
-# 	clang-format -i -style=google tests/*.c tests/*.h *.c *.h
-# 	clang-format -n -style=google tests/*.c tests/*.h *.c *.h
+style_check:
+	clang-format -i -style=google tests/*.c *.c *.h
+	clang-format -n -style=google tests/*.c *.c *.h
 
-# cpp:
-# 	cppcheck --enable=all --suppress=missingIncludeSystem $(SRC_FILES)
+cpp:
+	cppcheck --enable=all --suppress=missingIncludeSystem $(FILES)
 
 clean_obj:
 	rm -rf obj/*.o *.o
