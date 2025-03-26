@@ -1,69 +1,46 @@
 # Настройки компиляции
-LIBRARY = s21_decimal.a
+PROGRAM = main_check
 CC = gcc
-ARR = ar
-RL = ranlib
-CFLAGS = -g -Wall -Wextra -Werror -std=c11
-TEST_FLAGS = -lcheck -lm -lsubunit
+CFLAGS = -g -Wall -Wextra -std=c11
+#CFLAGS = -g -Wall -Wextra -Werror -std=c11
 LIB = -L. -l:s21_decimal.a
-GCOV_FLAGS = -fprofile-arcs -ftest-coverage
-BRANCHES = --rc lcov_branch_coverage=1
-GCOV_REPORT_DIR = ../gcov_report
-TESTS_DIR = ../tests
-TEST_PROGRAM = $(TESTS_DIR)/check_s21_decimal
 
 # Источники и объекты
 SOURCE = $(wildcard *.c)
 OBJECTS = $(SOURCE:.c=.o)
-TESTS = $(wildcard $(TESTS_DIR)/*.c)
-TESTS_OBJECTS = $(TESTS:.c=.o)
 
 # Основные цели
-.PHONY: all clean format_project scan_project_on_format rebuild gcov_report valgrind_test test
+.PHONY: all clean format_project scan_project_on_format rebuild 
 
-all: $(LIBRARY) test gcov_report
+all: cp_lib format_project main Float_Parsers $(PROGRAM)
 
-$(LIBRARY): $(OBJECTS)
-	$(ARR) r $(LIBRARY) $(OBJECTS)
-	$(RL) $(LIBRARY)
+$(PROGRAM): 
+	$(CC) $(CFLAGS) $(OBJECTS) -o $(PROGRAM) $(LIB) -lm
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+main: 
+	$(CC) $(CFLAGS) -c main.c -o main.o
 
-# Тестирование
-test: $(LIBRARY) $(TESTS_OBJECTS)
-	$(CC) $(CFLAGS) $(TESTS_OBJECTS) -o $(TEST_PROGRAM) $(LIB) $(TEST_FLAGS)
-	$(TEST_PROGRAM)
+Float_Parsers: 
+	$(CC) $(CFLAGS) -c Float_Parsers.c -o Float_Parsers.o
 
-gcov_report :
-	$(CC) $(CFLAGS) $(TESTS) $(SOURCE) -o $(TEST_PROGRAM) $(TEST_FLAGS) $(GCOV_FLAGS)
-	$(TEST_PROGRAM)
-	mkdir -p $(GCOV_REPORT_DIR)
-	lcov -t "Report" -c -d $(TESTS_DIR) -o $(GCOV_REPORT_DIR)/coverage.info $(BRANCHES)
-	genhtml -o $(GCOV_REPORT_DIR)/html $(GCOV_REPORT_DIR)/coverage.info $(BRANCHES)
+cp_lib :
+	cp ../../C5_s21_decimal-1/src/s21_decimal.a ../../C5_s21_decimal-1/src/s21_decimal.h .
 
-
-# Проверка на утечки памяти
-valgrind_test:
-	valgrind --leak-check=full $(TEST_PROGRAM)
+rebuild : clean all run
 
 # Очистка
-clean: clean_tests_report_files
-	rm -rf $(OBJECTS) $(LIBRARY) $(TESTS_OBJECTS) $(TEST_PROGRAM) $(GCOV_REPORT_DIR)
+clean: 
+	rm -rf $(OBJECTS) $(PROGRAM) s21_decimal.a s21_decimal.h
 
-clean_tests_report_files:
-	rm -f $(TESTS_DIR)/*.gdna $(TESTS_DIR)/*.gcno $(TESTS_DIR)/*.gcda
 
 # Форматирование кода
 format_project:
-	clang-format -i *.c *.h $(TESTS_DIR)/*.c $(TESTS_DIR)/*.h
+	clang-format -i *.c *.h 
 
 # Проверка форматирования
 scan_project_on_format:
-	clang-format -n *.c *.h $(TESTS_DIR)/*.c $(TESTS_DIR)/*.h
+	clang-format -n *.c *.h
 
-cppcheck_test:
-	cppcheck $(SOURCE)
+run : clean all
+	./$(PROGRAM)
 
-# Пересборка
-rebuild: clean all
