@@ -3,7 +3,7 @@ PROGRAM = main_check
 CC = gcc
 CFLAGS = -g -Wall -Wextra -std=c11
 #CFLAGS = -g -Wall -Wextra -Werror -std=c11
-LIB = -L. -l:s21_decimal.a
+LIB = -L. -l:s21_decimal.a -lm
 
 # Источники и объекты
 SOURCE = $(wildcard *.c)
@@ -12,7 +12,7 @@ OBJECTS = $(SOURCE:.c=.o)
 # Основные цели
 .PHONY: all clean format_project scan_project_on_format rebuild 
 
-all: cp_lib format_project main Float_Parsers $(PROGRAM)
+all: cp_lib format_project main Float_Parsers Utils $(PROGRAM)
 
 $(PROGRAM): 
 	$(CC) $(CFLAGS) $(OBJECTS) -o $(PROGRAM) $(LIB) -lm
@@ -21,7 +21,10 @@ main:
 	$(CC) $(CFLAGS) -c main.c -o main.o
 
 Float_Parsers: 
-	$(CC) $(CFLAGS) -c Float_Parsers.c -o Float_Parsers.o
+	$(CC) $(CFLAGS) -c s21_float_parsers.c -o s21_float_parsers.o
+
+Utils:
+	$(CC) $(CFLAGS) -c s21_utils.c -o s21_utils.o
 
 cp_lib :
 	cp ../../C5_s21_decimal-1/src/s21_decimal.a ../../C5_s21_decimal-1/src/s21_decimal.h .
