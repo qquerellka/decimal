@@ -26,18 +26,17 @@ int main(void) {
   float cf = -5.75f;
 
   result = from_f_to_d(cf, &a);
-  printf("cf before = %f, result = %d\n\n", cf, result);
+  printf("cf before = %f, result = %d\n", cf, result);
   print(a);
 
   cf = 0;
-
   from_d_to_f(a, &cf);
   printf("cf after = %f\n\n", cf);
   //
   cf = -120.75678f;
 
   result = from_f_to_d(cf, &a);
-  printf("cf before = %f, result = %d\n\n", cf, result);
+  printf("cf before = %f, result = %d\n", cf, result);
   print(a);
 
   cf = 0;
@@ -50,7 +49,7 @@ int main(void) {
   cf = 0.9;
 
   result = from_f_to_d(cf, &a);
-  printf("cf before = %f, result = %d\n\n", cf, result);
+  printf("cf before = %f, result = %d\n", cf, result);
   print(a);
 
   cf = 0;
@@ -63,7 +62,7 @@ int main(void) {
   cf = 0;
   a = new_dec();
   result = from_f_to_d(cf, &a);
-  printf("cf before = %f, result = %d\n\n", cf, result);
+  printf("cf before = %f, result = %d\n", cf, result);
   print(a);
 
   cf = 0;
@@ -75,7 +74,7 @@ int main(void) {
   cf = NAN;
 
   result = from_f_to_d(cf, &a);
-  printf("cf before = %f, result = %d\n\n", cf, result);
+  printf("cf before = %f, result = %d\n", cf, result);
   print(a);
 
   cf = 0;
@@ -94,7 +93,7 @@ int main(void) {
   cf = val.float_value;
 
   result = from_f_to_d(cf, &a);
-  printf("cf before = %f, result = %d\n\n", cf, result);
+  printf("cf before = %f, result = %d\n", cf, result);
   print(a);
 
   cf = 0;
@@ -112,7 +111,7 @@ int main(void) {
   cf = val.float_value;
 
   result = from_f_to_d(cf, &a);
-  printf("cf before = %f, result = %d\n\n", cf, result);
+  printf("cf before = %f, result = %d\n", cf, result);
   print(a);
 
   cf = 0;
@@ -130,7 +129,7 @@ int main(void) {
   cf = val.float_value;
 
   result = from_f_to_d(cf, &a);
-  printf("cf before = %f, result = %d\n\n", cf, result);
+  printf("cf before = %f, result = %d\n", cf, result);
   print(a);
 
   cf = 0;

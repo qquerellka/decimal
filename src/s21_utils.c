@@ -6,10 +6,16 @@ int s21_is_float_nan(s21_FloatUint32_t float_box) {
   if ((float_box.uint_value & FLOAT_POSITIVE_NAN_MASK) ==
       FLOAT_POSITIVE_NAN_MASK) {
     is_nan_result = 1;
-  } else if ((float_box.uint_value & FLOAT_NEGATIVE_NAN_MASK) ==
-             FLOAT_NEGATIVE_NAN_MASK) {
-    is_nan_result = 1;
   }
+  //можно раскомментировать,но для бесконечности
+  // это оверхед и порядок проверки важен
+  // if ((float_box.uint_value & FLOAT_NEGATIVE_NAN_MASK) ==
+  //     FLOAT_NEGATIVE_NAN_MASK) {
+  //   is_nan_result = 1;
+  // } else if ((float_box.uint_value & FLOAT_POSITIVE_NAN_MASK) ==
+  //            FLOAT_POSITIVE_NAN_MASK) {
+  //   is_nan_result = 1;
+  // }
 
   return is_nan_result;
 }
@@ -17,13 +23,13 @@ int s21_is_float_nan(s21_FloatUint32_t float_box) {
 int s21_is_float_zero(s21_FloatUint32_t float_box) {
   int is_zero_result = 0;
 
-  if ((float_box.uint_value & FLOAT_POSITIVE_ZERO_MASK) ==
-      FLOAT_POSITIVE_ZERO_MASK) {
-    is_zero_result = 1;
-  } else if ((float_box.uint_value & FLOAT_NEGATIVE_ZERO_MASK) ==
-             FLOAT_NEGATIVE_ZERO_MASK) {
+  if (float_box.uint_value == FLOAT_POSITIVE_ZERO_MASK) {
     is_zero_result = 1;
   }
+  // else if ((float_box.uint_value & FLOAT_NEGATIVE_ZERO_MASK) ==
+  //            FLOAT_NEGATIVE_ZERO_MASK) {
+  //   is_zero_result = 1;
+  // }
 
   return is_zero_result;
 }
