@@ -25,11 +25,9 @@ int s21_is_float_zero(s21_FloatUint32_t float_box) {
 
   if (float_box.uint_value == FLOAT_POSITIVE_ZERO_MASK) {
     is_zero_result = 1;
+  } else if (float_box.uint_value == FLOAT_NEGATIVE_ZERO_MASK) {
+    is_zero_result = 1;
   }
-  // else if ((float_box.uint_value & FLOAT_NEGATIVE_ZERO_MASK) ==
-  //            FLOAT_NEGATIVE_ZERO_MASK) {
-  //   is_zero_result = 1;
-  // }
 
   return is_zero_result;
 }
@@ -66,10 +64,6 @@ uint32_t s21_get_float_mantisa(uint32_t float_box, unsigned char scale) {
   uint32_t result_mantiss = 0;
 
   result_mantiss = float_box & FLOAT_MANTISA_MASK;
-
-  if (scale) {
-    result_mantiss |= FLOAT_SCALE_EXIST_MASK;
-  }
 
   return result_mantiss;
 }

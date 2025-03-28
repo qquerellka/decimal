@@ -27,19 +27,23 @@ int from_f_to_d(float src, s21_decimal *dst) {
   float_box = s21_pack_float_in_int_box(src);
 
   is_nan = s21_is_float_nan(float_box);
-
-  printf("is_nan = %d is zero = %d\n", is_nan, is_zero);
-
+  //
+  printf("is_nan = %d\n", is_nan);
+  //
   if (is_nan) {
     result_to_decimal = 1;
   } else {
     is_zero = s21_is_float_zero(float_box);
-
+    //
+    printf("is zero = %d\n", is_zero);
+    //
     if (!is_zero) {
       float_descriptor = s21_get_float_data(float_box.uint_value);
 
       s21_set_sign(dst, (int)float_descriptor.is_minus_sign);
-
+      //
+      printf("scale is = %d\n", float_descriptor.scale);
+      //
       s21_set_scale(dst, (int)float_descriptor.scale);
 
       s21_set_float_mantisa_in_decimal(dst, float_descriptor.mantisa);

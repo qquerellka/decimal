@@ -138,5 +138,39 @@ int main(void) {
 
   printf("cf after = %f\n\n", cf);
 
+  cf = 7.53e-15;
+  result = from_f_to_d(cf, &a);
+  printf("cf before = %f, result = %d\n", cf, result);
+  print(a);
+  cf = 0;
+  from_d_to_f(a, &cf);
+  printf("cf after = %29.15f\n\n", cf);
+
+  val.uint_value = 0x8000000000;
+  cf = val.float_value;
+  result = from_f_to_d(cf, &a);
+  printf("cf before = %f, result = %d\n", cf, result);
+  print(a);
+  cf = 0;
+  from_d_to_f(a, &cf);
+  printf("cf after = %29.29f\n\n", cf);
+
+  val.uint_value = 0x0000000000;
+  cf = val.float_value;
+  result = from_f_to_d(cf, &a);
+  printf("cf before = %f, result = %d\n", cf, result);
+  print(a);
+  cf = 0;
+  from_d_to_f(a, &cf);
+  printf("cf after = %29.29f\n\n", cf);
+
+  cf = 0;
+  result = from_f_to_d(cf, &a);
+  printf("cf before = %f, result = %d\n", cf, result);
+  print(a);
+  cf = 0;
+  from_d_to_f(a, &cf);
+  printf("cf after = %29.29f\n\n", cf);
+
   return 0;
 }
