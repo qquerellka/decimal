@@ -253,8 +253,35 @@ int main(void) {
   printf("cf before = %E, result = %d\n", cf, result);
   print(a);
   cf = 0;
+  result = from_d_to_f(a, &cf);
+  printf("cf after = %E result =%d\n\n", cf, result);
+
+  print(a);
+  cf = 0;
+  a.bits[3] = 0;
+  a.bits[2] = 1;
+  a.bits[1] = 0;
+  a.bits[0] = 0;
+  result = from_d_to_f(a, &cf);
+  printf("cf after = %E result =%d\n\n", cf, result);
+
+  print(a);
+  cf = 0;
+  a.bits[3] = 0;
+  a.bits[2] = 1;
+  a.bits[1] = 0;
+  a.bits[0] = FLOAT_MANTISA_MASK;
   from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  printf("cf after = %E result =%d\n\n", cf, result);
+
+  print(a);
+  cf = 0;
+  a.bits[3] = 0;
+  a.bits[2] = 0;
+  a.bits[1] = 0;
+  a.bits[0] = 0x01000000;
+  from_d_to_f(a, &cf);
+  printf("cf after = %E result =%d\n\n", cf, result);
 
   return 0;
 }

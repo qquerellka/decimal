@@ -10,16 +10,6 @@ int s21_is_float_nan(s21_FloatUint32_t float_box) {
       FLOAT_POSITIVE_NAN_MASK) {
     is_nan_result = 1;
   }
-  //можно раскомментировать,но для бесконечности
-  // это оверхед и порядок проверки важен
-  // if ((float_box.uint_value & FLOAT_NEGATIVE_NAN_MASK) ==
-  //     FLOAT_NEGATIVE_NAN_MASK) {
-  //   is_nan_result = 1;
-  // } else if ((float_box.uint_value & FLOAT_POSITIVE_NAN_MASK) ==
-  //            FLOAT_POSITIVE_NAN_MASK) {
-  //   is_nan_result = 1;
-  // }
-
   return is_nan_result;
 }
 
@@ -93,12 +83,6 @@ float s21_round_float_to_7(float float_value) {
 
   result_float = temp_result;
 
-  printf(
-      "\tis neg = %d\n\tinteger count = %d\n\tfractional numbers count = "
-      "%d\n\tpower factor = %lf\n\trounded value = %f\n",
-      is_negative, integer_numbers_count, fractional_numbers_count,
-      power_factor, result_float);
-
   return result_float;
 }
 
@@ -140,14 +124,6 @@ uint32_t s21_get_float_mantisa(uint32_t float_box) {
 
   return result_mantiss;
 }
-
-// uint32_t s21_get_float_mantisa(uint32_t float_box, unsigned char scale) {
-//   uint32_t result_mantiss = 0;
-
-//   result_mantiss = float_box & FLOAT_MANTISA_MASK;
-
-//   return result_mantiss;
-// }
 
 s21_FloatDescriptor_t s21_get_float_data(uint32_t float_box) {
   s21_FloatDescriptor_t result_descriptor = {0};

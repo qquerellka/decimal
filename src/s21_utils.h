@@ -73,6 +73,8 @@
 #define FLOAT_OVERFLOW_EXPONENT_SCALE 96
 #define FLOAT_TOO_SMALL 1e-28
 
+#define FLOAT_MANTISA_MASK 0x00ffffff
+
 typedef union float_uint32_t {
   float float_value;
   uint32_t uint_value;
