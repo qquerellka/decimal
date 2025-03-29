@@ -216,7 +216,7 @@ int main(void) {
   from_d_to_f(a, &cf);
   printf("cf after = %E\n\n", cf);
 
-  val.float_value = pow(2, 96);
+  val.float_value = 79.22816E+28;
   cf = val.float_value;
 
   result = from_f_to_d(cf, &a);
@@ -226,7 +226,7 @@ int main(void) {
   from_d_to_f(a, &cf);
   printf("cf after = %E\n\n", cf);
 
-  val.float_value = -pow(2, 96);
+  val.float_value = -7.922817E+28;
   cf = val.float_value;
 
   result = from_f_to_d(cf, &a);
@@ -247,6 +247,26 @@ int main(void) {
   printf("cf after = %E\n\n", cf);
 
   val.float_value = -1e-29;
+  cf = val.float_value;
+
+  result = from_f_to_d(cf, &a);
+  printf("cf before = %E, result = %d\n", cf, result);
+  print(a);
+  cf = 0;
+  result = from_d_to_f(a, &cf);
+  printf("cf after = %E result =%d\n\n", cf, result);
+
+  val.float_value = 2147483.647;
+  cf = val.float_value;
+
+  result = from_f_to_d(cf, &a);
+  printf("cf before = %E, result = %d\n", cf, result);
+  print(a);
+  cf = 0;
+  result = from_d_to_f(a, &cf);
+  printf("cf after = %E result =%d\n\n", cf, result);
+
+  val.float_value = -2147483.647;
   cf = val.float_value;
 
   result = from_f_to_d(cf, &a);
@@ -283,5 +303,19 @@ int main(void) {
   from_d_to_f(a, &cf);
   printf("cf after = %E result =%d\n\n", cf, result);
 
+  print(a);
+  cf = 0;
+  a.bits[3] = 0;
+  a.bits[2] = 0;
+  a.bits[1] = 0;
+  a.bits[0] = 0x01000000;
+  from_d_to_f(a, &cf);
+  printf("cf after = %E result =%d\n\n", cf, result);
+
+  s21_decimal dec = {0};
+  dec.bits[0] = 1234;
+  dec.bits[1] = 9876;
+  dec.bits[2] = 86688;
+  print_dec(dec);
   return 0;
 }

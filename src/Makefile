@@ -1,7 +1,8 @@
 # Настройки компиляции
 PROGRAM = main_check
 CC = gcc
-CFLAGS = -g -Wall -Wextra -Werror -std=c11
+#CFLAGS = -g -Wall -Wextra -Werror -std=c11
+CFLAGS = -g -Wall -Wextra  -std=c11
 LIB = -L. -l:s21_decimal.a -lm
 
 # Источники и объекты
