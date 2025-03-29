@@ -1,7 +1,6 @@
 #include "s21_utils.h"
 
 #include <math.h>
-#include <stdio.h>
 
 int s21_is_float_nan(s21_FloatUint32_t float_box) {
   int is_nan_result = 0;
@@ -35,8 +34,6 @@ int s21_is_float_overflow(double double_value) {
   result = (double_value >=
             pow(FLOAT_BASE_OF_THE_EXPONENT, FLOAT_OVERFLOW_EXPONENT_SCALE));
 
-  if (result) printf("здец, ну ты чо((\n");
-
   return result;
 }
 
@@ -48,8 +45,6 @@ int s21_is_float_too_small(double double_value) {
   }
 
   result = (double_value <= FLOAT_TOO_SMALL);
-
-  if (result) printf("здец, ну ты чо, vfkf((\n");
 
   return result;
 }
