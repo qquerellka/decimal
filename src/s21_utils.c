@@ -41,7 +41,7 @@ int s21_is_float_too_small(double double_value) {
     double_value = -double_value;
   }
 
-  result = (double_value <= FLOAT_TOO_SMALL);
+  result = (int)(double_value < FLOAT_TOO_SMALL);
 
   return result;
 }

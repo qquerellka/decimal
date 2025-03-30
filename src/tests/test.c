@@ -16,6 +16,12 @@
 #define MaxInt 0b11111111111111111111111111111111
 #define MaxIntMinusOne 0b11111111111111111111111111111110
 
+#define POSITIVE_NAN_MASK 0x7f800000
+#define NEGATIVE_NAN_MASK 0xff800000
+#define POSITIVE_ZERO_MASK 0x00000000
+#define NEGATIVE_ZERO_MASK 0x80000000
+#define TOO_SMALL 1e-29
+
 /// =============== VARIABLES ===============
 s21_decimal max = {{MAX_UINT, MAX_UINT, MAX_UINT, 0}};
 s21_decimal middle = {{MAX_INT, MAX_INT, MAX_INT, 0}};
@@ -377,13 +383,208 @@ START_TEST(from_float_to_decimal_decimal_to_float) {
   ck_assert(fabs(res_minus - res) < 1.0);
   ck_assert_int_eq(0, output);
 
-  // output = s21_from_float_to_decimal((temp_plus * 10), &temp_res);
-  // ck_assert_int_eq(1, s21_is_equal(res_from_float_to_decimal, temp_res));
+  res = 0;
+  temp_plus = 5.75f;
+  temp_minus = -5.75f;
+  res_plus = 5.75f;
+  res_minus = -5.75f;
+
+  output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+
+  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  res = 0;
+  temp_plus = 120.75678f;
+  temp_minus = -120.75678f;
+  res_plus = 120.75678f;
+  res_minus = -120.75678f;
+
+  output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+
+  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  res = 0;
+  temp_plus = 0.9f;
+  temp_minus = -0.9f;
+  res_plus = 0.9f;
+  res_minus = -0.9f;
+
+  output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+
+  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  res = 0;
+  temp_plus = 79.22816E+28f;
+  temp_minus = -79.22816E+28f;
+  res_plus = 0.0f;
+  res_minus = 0.0f;
+
+  output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(1, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+
+  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  ck_assert_int_eq(1, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  res = 0;
+  temp_plus = TOO_SMALL;
+  temp_minus = -TOO_SMALL;
+  res_plus = 0.0f;
+  res_minus = 0.0f;
+
+  output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(1, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+
+  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  ck_assert_int_eq(1, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  res = 0;
+  temp_plus = 0;
+  temp_minus = -0;
+  res_plus = 0;
+  res_minus = 0;
+
+  output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+
+  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  res = 0;
+  temp_plus = 79.22816E+25f;
+  temp_minus = -79.22816E+25f;
+  res_plus = 79.22816E+25f;
+  res_minus = -79.22816E+25f;
+
+  output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+
+  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  res = 0;
+  union temp_union{
+    float value;
+    uint32_t int_mask;
+  };
+
+  union temp_union temp_u={0};
+
+  temp_u.int_mask=POSITIVE_ZERO_MASK;
+  temp_plus = temp_u.value;
+  res_plus = 0;
+
+  output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+
+  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  temp_u.int_mask=NEGATIVE_ZERO_MASK;
+  temp_minus = temp_u.value;
+  res_minus = 0;
+
+  output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  ck_assert_int_eq(0, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+
+  temp_u.int_mask=POSITIVE_NAN_MASK;
+  temp_plus = temp_u.value;
+  res_plus = 0;
+
+  output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(1, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+
+  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  temp_u.int_mask=NEGATIVE_NAN_MASK;
+  temp_minus = temp_u.value;
+  res_minus = 0;
+
+  output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  ck_assert_int_eq(1, output);
+  output = s21_from_decimal_to_float(temp_res, &res);
+  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert_int_eq(0, output);
+
+  output = s21_from_float_to_decimal(temp_minus, NULL);
+  ck_assert_int_eq(1, output);
+  output = s21_from_decimal_to_float(temp_res, NULL);
+  ck_assert_int_eq(1, output);
+
+  // output = s21_from_float_to_decimal(temp_minus, &temp_res);
+  // ck_assert_int_eq(0, output);
+  // output = s21_from_decimal_to_float(temp_res, &res);
+  // ck_assert(fabs(res_minus - res) < 1.0);
   // ck_assert_int_eq(0, output);
 
-  // output = s21_from_decimal_to_float(tmp_float, &res);
-  // ck_assert(fabs(21474840.0 - res) < 1.0);
-  // погрешность ck_assert_int_eq(0, output);
+  // // // output = s21_from_float_to_decimal((temp_plus * 10), &temp_res);
+  // // // ck_assert_int_eq(1, s21_is_equal(res_from_float_to_decimal, temp_res));
+  // // // ck_assert_int_eq(0, output);
+
+  // // // output = s21_from_decimal_to_float(tmp_float, &res);
+  // // // ck_assert(fabs(21474840.0 - res) < 1.0);
+  // // // погрешность ck_assert_int_eq(0, output);
 }
 END_TEST
 
