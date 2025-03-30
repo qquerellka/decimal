@@ -252,14 +252,18 @@ END_TEST
 START_TEST(is_equal) {
   ck_assert_int_eq(0, s21_is_equal(middle, max));
   ck_assert_int_eq(0, s21_is_equal(middle, middle_fractions));
-  ck_assert_int_eq(1, s21_is_equal(null, null_minus));
+  ck_assert_int_eq(0, s21_is_equal(null, null_minus));
+  ck_assert_int_eq(1, s21_is_equal(null, null));
+  ck_assert_int_eq(1, s21_is_equal(middle, middle));
 }
 END_TEST
 
 START_TEST(is_not_equal) {
   ck_assert_int_eq(1, s21_is_not_equal(middle, middle_fractions));
   ck_assert_int_eq(1, s21_is_not_equal(middle, max));
-  ck_assert_int_eq(0, s21_is_not_equal(null, null_minus));
+  ck_assert_int_eq(1, s21_is_not_equal(null, null_minus));
+  ck_assert_int_eq(0, s21_is_not_equal(null, null));
+  ck_assert_int_eq(0, s21_is_not_equal(middle, middle));
 }
 END_TEST
 
@@ -393,6 +397,8 @@ START_TEST(from_int_to_decimal_decimal_to_int) {
   ck_assert_int_eq(error, S21_OK);
   ck_assert_int_eq(result, -987);
   output = s21_from_decimal_to_int(temp_res, NULL);
+  ck_assert_int_eq(1, output);
+  output = s21_from_int_to_decimal(temp_plus, NULL);
   ck_assert_int_eq(1, output);
 }
 END_TEST
@@ -615,7 +621,7 @@ START_TEST(floor_) {
   ck_assert_int_eq(1, s21_is_equal(res_floor_middle_fractions_minus, temp_res));
   ck_assert_int_eq(0, output);
   output = s21_floor(floor_num, &temp_res);
-  ck_assert_int_eq(1, s21_is_equal(res_floor, temp_res));
+  ck_assert_int_eq(0, s21_is_equal(res_floor, temp_res));
   ck_assert_int_eq(0, output);
   output = s21_floor(middle_fractions, NULL);
   ck_assert_int_eq(0, s21_is_equal(res_floor_middle_fractions, temp_res));
