@@ -22,7 +22,7 @@ endif
 
 all: s21_decimal.a
 
-.PHONY: all test memory_test s21_decimal.a gcov_report clean rebuild
+.PHONY: all test s21_decimal.a gcov_report clean rebuild
 
 s21_decimal.a: $(FILES)
 	$(CC) -c $(FLAGS) $(FILES)
@@ -55,9 +55,6 @@ endif
 style_check:
 	clang-format -i -style=google tests/*.c *.c *.h
 	clang-format -n -style=google tests/*.c *.c *.h
-
-cpp:
-	cppcheck --enable=all --suppress=missingIncludeSystem $(FILES)
 
 clean_obj:
 	rm -rf obj/*.o *.o
