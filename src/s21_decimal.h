@@ -3,6 +3,7 @@
 
 #include <limits.h>
 #include <math.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,6 +11,26 @@
 
 #define S21_MAX 79228162514264337593543950335.0F
 #define S21_MIN -79228162514264337593543950335.0F
+
+#define FLOAT_POSITIVE_NAN_MASK 0x7f800000
+#define FLOAT_NEGATIVE_NAN_MASK 0xff800000
+
+#define FLOAT_POSITIVE_ZERO_MASK 0x00000000
+#define FLOAT_NEGATIVE_ZERO_MASK 0x80000000
+
+#define FLOAT_SIGN_BIT 31
+#define FLOAT_TOO_SMALL 1e-28
+
+typedef union float_uint32_t {
+  float float_value;
+  uint32_t uint_value;
+} s21_FloatUint32_t;
+
+typedef struct float_descriptor {
+  uint32_t mantisa;
+  unsigned char is_minus_sign;
+  char scale;
+} s21_FloatDescriptor_t;
 
 typedef struct {
   unsigned bits[4];
@@ -59,17 +80,24 @@ void s21_set_sign(s21_decimal *decimal, int sign);
 int s21_is_zero(s21_decimal *value);
 int s21_mul_by_10(s21_decimal *value);
 int s21_normalize(s21_decimal *value_1, s21_decimal *value_2);
-// ===========================
-// void s21_shift_left_96(uint32_t num[3], int shift);
-// int s21_is_greater_or_equal_96(uint32_t num1[3], uint32_t num2[3]);
-// void s21_sub_96(uint32_t num1[3], uint32_t num2[3]);
-// void s21_set_bit_96(uint32_t num[3], int bit);
-// int s21_is_zero_96(uint32_t num[3]);
-// void s21_add_96(uint32_t num[3], uint32_t value);
-// void s21_multiply_by_10_96(uint32_t *quotient, uint32_t *remainder);
-//int s21_get_bit(unsigned value, unsigned bit);
-// =======================
 int s21_div_by_ten(s21_decimal *value);
-
+int s21_get_bit(s21_decimal value, unsigned bit);
+void s21_set_bit(s21_decimal *value, unsigned bit, int set);
+void s21_left_shift(s21_decimal *value);
+int s21_is_float_overflow(double double_value);
+int s21_is_float_too_small(double double_value);
+int s21_is_float_nan(s21_FloatUint32_t float_box);
+int s21_is_float_zero(s21_FloatUint32_t float_box);
+void s21_initialize_decimal_as_zero(s21_decimal *decimal);
+void s21_set_float_mantisa_in_decimal(s21_decimal *dst, uint32_t uint_value);
+int s21_is_decimal_not_zero(s21_decimal *decimal);
+double s21_convert_decimal_mantisa_to_double(s21_decimal dec);
+s21_FloatUint32_t s21_pack_float_in_int_box(float float_value);
+unsigned char s21_get_float_sign(uint32_t float_box);
+s21_FloatDescriptor_t s21_get_float_data(s21_FloatUint32_t float_box);
+double s21_get_multiplied_result(double decimal_mantissa_value);
+double s21_get_frac_result(double decimal_mantissa_value);
+float s21_convert_float_descriptor_to_float(
+    s21_FloatDescriptor_t *float_descriptor, double double_float_box);
 
 #endif

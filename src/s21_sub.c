@@ -17,13 +17,7 @@ int s21_sub(s21_decimal value_1, s21_decimal value_2, s21_decimal *result) {
     s21_set_sign(&value_2, sign1);
     return s21_add(value_1, value_2, result);
   }
-
-  int greater =
-      (value_1.bits[2] > value_2.bits[2]) ||
-      (value_1.bits[2] == value_2.bits[2] &&
-       value_1.bits[1] > value_2.bits[1]) ||
-      (value_1.bits[2] == value_2.bits[2] &&
-       value_1.bits[1] == value_2.bits[1] && value_1.bits[0] > value_2.bits[0]);
+  int greater = s21_is_greater(value_1, value_2);
 
   s21_decimal max = greater ? value_1 : value_2;
   s21_decimal min = greater ? value_2 : value_1;
