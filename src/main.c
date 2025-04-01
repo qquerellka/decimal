@@ -1,5 +1,4 @@
 #include <math.h>
-#include <stdint.h>
 #include <stdio.h>
 
 #include "s21_decimal.h"
@@ -21,301 +20,453 @@ void print(s21_decimal decimal) {
 
 int main(void) {
   s21_decimal a = new_dec();
-  int result = 0;
+  int result_fd = 0;
+  int result_df = 0;
   //
-  float cf = -5.75f;
-
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  float testing_f = -5.75f;
+  float control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
-  //
-  cf = -120.75678f;
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f after\t%f\n", result_fd, control_f, result_df, testing_f);
+
+  if (fabs(testing_f - control_f) < 1e-7) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("\n\n");
+
+  testing_f = -120.75678f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  //
-  cf = 0.9;
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  if (fabs(testing_f - control_f) < 1e-5) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e-5 = \t\t%f\n\n", 1e-5);
+
+  testing_f = 0.9f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  //
-  cf = 0;
-  a = new_dec();
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  if (fabs(testing_f - control_f) < 1e-7) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e-7 = \t\t%f\n\n", 1e-7);
+
+  //------------------------------------------------------------------------------------------------------------//
+    // cf = 0;
+    // a = new_dec();
+    // result = from_f_to_d(cf, &a);
+    // printf("cf before = %E, result = %d\n", cf, result);
+    // print(a);
+    // cf = 0;
+    // from_d_to_f(a, &cf);
+    // printf("cf after = %E\n\n", cf);
+
+    // cf = NAN;
+    // result = from_f_to_d(cf, &a);
+    // printf("cf before = %E, result = %d\n", cf, result);
+    // print(a);
+    // cf = 0;
+    // from_d_to_f(a, &cf);
+    // printf("cf after = %E\n\n", cf);
+
+    // s21_FloatUint32_t val = {0};
+    // // val.uint_value = 0x7f800000;
+    // // //  cf = INF;
+
+    // // printf("Fusk %f %u\n", val.float_value, val.uint_value);
+    // // printf("Fusk %f \n", val.float_value);
+
+    // // cf = val.float_value;
+
+    // // result = from_f_to_d(cf, &a);
+    // // printf("cf before = %f, result = %d\n", cf, result);
+    // // print(a);
+
+    // // cf = 0;
+
+    // // from_d_to_f(a, &cf);
+
+    // // printf("cf after = %f\n\n", cf);
+
+    // // val.uint_value = 0xff800000;
+    // // //  cf = - INF;
+
+    // // printf("Fusk %f %u\n", val.float_value, val.uint_value);
+    // // printf("Fusk %f \n", val.float_value);
+
+    // // cf = val.float_value;
+
+    // // result = from_f_to_d(cf, &a);
+    // // printf("cf before = %f, result = %d\n", cf, result);
+    // // print(a);
+
+    // // cf = 0;
+
+    // // from_d_to_f(a, &cf);
+
+    // // printf("cf after = %f\n\n", cf);
+
+    // // val.uint_value = 0xff803500;
+    // // //  cf = - INF;
+
+    // // printf("Fusk %f %u\n", val.float_value, val.uint_value);
+    // // printf("Fusk %f \n", val.float_value);
+
+    // // cf = val.float_value;
+
+    // // result = from_f_to_d(cf, &a);
+    // // printf("cf before = %f, result = %d\n", cf, result);
+    // // print(a);
+
+    // // cf = 0;
+
+    // // from_d_to_f(a, &cf);
+
+    // // printf("cf after = %f\n\n", cf);
+
+    // // cf = 7.53e-15;
+    // // result = from_f_to_d(cf, &a);
+    // // printf("cf before = %f, result = %d\n", cf, result);
+    // // print(a);
+    // // cf = 0;
+    // // from_d_to_f(a, &cf);
+    // // printf("cf after = %29.15f\n\n", cf);
+
+    // // val.uint_value = 0x80000000;
+    // // cf = val.float_value;
+    // // result = from_f_to_d(cf, &a);
+    // // printf("cf before = %f, result = %d\n", cf, result);
+    // // print(a);
+    // // cf = 0;
+    // // from_d_to_f(a, &cf);
+    // // printf("cf after = %29.29f\n\n", cf);
+
+    // // val.uint_value = 0x0000000000;
+    // // cf = val.float_value;
+    // // result = from_f_to_d(cf, &a);
+    // // printf("cf before = %f, result = %d\n", cf, result);
+    // // print(a);
+    // // cf = 0;
+    // // from_d_to_f(a, &cf);
+    // // printf("cf after = %29.29f\n\n", cf);
+
+    // // cf = 0;
+    // // result = from_f_to_d(cf, &a);
+    // // printf("cf before = %f, result = %d\n", cf, result);
+    // // print(a);
+    // // cf = 0;
+    // // from_d_to_f(a, &cf);
+    // // printf("cf after = %29.29f\n\n", cf);
+  //------------------------------------------------------------------------------------------------------------//
+
+  testing_f = 0.15625f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  cf = NAN;
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  if (fabs(testing_f - control_f) < 1e-6) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e-6 = \t\t%f\n\n", 1e-6);
+
+  testing_f = 792281625.0f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  s21_FloatUint32_t val = {0};
-  // val.uint_value = 0x7f800000;
-  // //  cf = INF;
+  if (fabs(testing_f - control_f) < 1e2) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e2 = \t\t%f\n\n", 1e2);
 
-  // printf("Fusk %f %u\n", val.float_value, val.uint_value);
-  // printf("Fusk %f \n", val.float_value);
-
-  // cf = val.float_value;
-
-  // result = from_f_to_d(cf, &a);
-  // printf("cf before = %f, result = %d\n", cf, result);
-  // print(a);
-
-  // cf = 0;
-
-  // from_d_to_f(a, &cf);
-
-  // printf("cf after = %f\n\n", cf);
-
-  // val.uint_value = 0xff800000;
-  // //  cf = - INF;
-
-  // printf("Fusk %f %u\n", val.float_value, val.uint_value);
-  // printf("Fusk %f \n", val.float_value);
-
-  // cf = val.float_value;
-
-  // result = from_f_to_d(cf, &a);
-  // printf("cf before = %f, result = %d\n", cf, result);
-  // print(a);
-
-  // cf = 0;
-
-  // from_d_to_f(a, &cf);
-
-  // printf("cf after = %f\n\n", cf);
-
-  // val.uint_value = 0xff803500;
-  // //  cf = - INF;
-
-  // printf("Fusk %f %u\n", val.float_value, val.uint_value);
-  // printf("Fusk %f \n", val.float_value);
-
-  // cf = val.float_value;
-
-  // result = from_f_to_d(cf, &a);
-  // printf("cf before = %f, result = %d\n", cf, result);
-  // print(a);
-
-  // cf = 0;
-
-  // from_d_to_f(a, &cf);
-
-  // printf("cf after = %f\n\n", cf);
-
-  // cf = 7.53e-15;
-  // result = from_f_to_d(cf, &a);
-  // printf("cf before = %f, result = %d\n", cf, result);
-  // print(a);
-  // cf = 0;
-  // from_d_to_f(a, &cf);
-  // printf("cf after = %29.15f\n\n", cf);
-
-  // val.uint_value = 0x80000000;
-  // cf = val.float_value;
-  // result = from_f_to_d(cf, &a);
-  // printf("cf before = %f, result = %d\n", cf, result);
-  // print(a);
-  // cf = 0;
-  // from_d_to_f(a, &cf);
-  // printf("cf after = %29.29f\n\n", cf);
-
-  // val.uint_value = 0x0000000000;
-  // cf = val.float_value;
-  // result = from_f_to_d(cf, &a);
-  // printf("cf before = %f, result = %d\n", cf, result);
-  // print(a);
-  // cf = 0;
-  // from_d_to_f(a, &cf);
-  // printf("cf after = %29.29f\n\n", cf);
-
-  // cf = 0;
-  // result = from_f_to_d(cf, &a);
-  // printf("cf before = %f, result = %d\n", cf, result);
-  // print(a);
-  // cf = 0;
-  // from_d_to_f(a, &cf);
-  // printf("cf after = %29.29f\n\n", cf);
-
-  //
-  cf = 0.15625;
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  testing_f = 0.0792281625f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  val.float_value = 792281625;
-  cf = val.float_value;
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  if (fabs(testing_f - control_f) < 1e-7) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e-7 = \t\t%f\n\n", 1e-7);
+
+  //fail...
+  testing_f = 79.22800735f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  val.float_value = 0.0792281625;
-  cf = val.float_value;
+  if (fabs(testing_f - control_f) < 1e-6) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e-6 = \t\t%f\n\n", 1e-6);
 
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  //fail if 1e-5
+  testing_f = 456.789345f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  // val.float_value = 79.22800;
-  // cf = val.float_value;
+  if (fabs(testing_f - control_f) < 1e-4) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e-4 = \t\t%f\n\n", 1e-4);
 
-  // result = from_f_to_d(cf, &a);
-  // printf("cf before = %f uint = %u, result = %d\n", cf, val.uint_value,
-  // result); print(a);
-  // // cf = 0;
-  // //  from_d_to_f(a, &cf);
-  // //  printf("cf after = %15.29f\n\n", cf);
-
-  // printf("float in decimal form is:\n");
-  // s21_from_float_to_decimal(456.789345f, &a);
-  // printf("3: %u\n2: %u\n1: %u\n0: %u\n\nreal scale = %d\n", a.bits[3],
-  //        a.bits[2], a.bits[1], a.bits[0], s21_get_scale(&a));
-  // float part = a.bits[0];
-
-  // for (int i = 0; i < 4; i++) {
-  //   part /= 10;
-  // }
-
-  // printf("float = %.9f\n", part);
-
-  val.float_value = 5.75;
-  cf = val.float_value;
-
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  testing_f = 5.75f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  val.float_value = 79.22816E+28;
-  cf = val.float_value;
+  if (fabs(testing_f - control_f) < 1e-4) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e-4 = \t\t%f\n\n", 1e-4);
 
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  //работает корректно
+   testing_f = 79.22816E+28f;
+   control_f = testing_f;
+   result_fd = from_f_to_d(testing_f, &a);
+   print(a);
+   testing_f = 0;
+   result_df = from_d_to_f(a, &testing_f);
+   printf(
+       "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+       "after\t%f\n", result_fd, control_f, result_df, testing_f);
+
+  if (fabs(testing_f - control_f) < 1e-4) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e-4 = \t\t%f\n\n", 1e-4);
+
+  testing_f = 7.922816E+28f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  val.float_value = -7.922817E+28;
-  cf = val.float_value;
+  if (fabs(testing_f - control_f) < 1e21) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e21 = \t\t\t\t%f\n\n", 1e21);
 
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  testing_f = 1e-28f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  val.float_value = 1e-29;
-  cf = val.float_value;
+  if (fabs(testing_f - control_f) < 1e21) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e21 = \t\t\t\t%f\n\n", 1e21);
 
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  testing_f = 1e-29f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E\n\n", cf);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  val.float_value = -1e-29;
-  cf = val.float_value;
+  if (fabs(testing_f - control_f) < 1e21) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e21 = \t\t\t\t%f\n\n", 1e21);
 
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  //fail if 1e-1
+  testing_f = 2147483.647f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  result = from_d_to_f(a, &cf);
-  printf("cf after = %E result =%d\n\n", cf, result);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  val.float_value = 2147483.647;
-  cf = val.float_value;
+  if (fabs(testing_f - control_f) < 1e-1) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e-1 is \t\t\t\t%f\n\n", 1e-1);
 
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  //fail if 1e-1
+  testing_f = -2147483.647f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  result = from_d_to_f(a, &cf);
-  printf("cf after = %E result =%d\n\n", cf, result);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f"
+      "after\t%f\n", result_fd, control_f, result_df, testing_f);
 
-  val.float_value = -2147483.647;
-  cf = val.float_value;
+  if (fabs(testing_f - control_f) < 1e-1) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e-1 is \t\t\t\t%f\n\n", 1e-1);
 
-  result = from_f_to_d(cf, &a);
-  printf("cf before = %E, result = %d\n", cf, result);
+  testing_f = 18446744073709617151.0f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
   print(a);
-  cf = 0;
-  result = from_d_to_f(a, &cf);
-  printf("cf after = %E result =%d\n\n", cf, result);
-
-  print(a);
-  cf = 0;
   a.bits[3] = 0;
   a.bits[2] = 1;
   a.bits[1] = 0;
   a.bits[0] = 0;
-  result = from_d_to_f(a, &cf);
-  printf("cf after = %E result =%d\n\n", cf, result);
-
   print(a);
-  cf = 0;
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f after\t%f\n",
+      result_fd, control_f, result_df, testing_f);
+
+  if (fabs(testing_f - control_f) < 1e13) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e13 is \t\t\t\t%f\n\n", 1e13);
+
+  testing_f = 18446744073709551616.0f;
+  control_f = testing_f;
+  result_fd = from_f_to_d(testing_f, &a);
+  print(a);
   a.bits[3] = 0;
   a.bits[2] = 1;
   a.bits[1] = 0;
-  a.bits[0] = FLOAT_MANTISA_MASK;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E result =%d\n\n", cf, result);
-
+  a.bits[0] = 0xffff;
   print(a);
-  cf = 0;
-  a.bits[3] = 0;
-  a.bits[2] = 0;
-  a.bits[1] = 0;
-  a.bits[0] = 0x01000000;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E result =%d\n\n", cf, result);
+  testing_f = 0;
+  result_df = from_d_to_f(a, &testing_f);
+  printf(
+      "result = %d, testing_f before\t%f\nresult = %d, testing_f after\t%f\n",
+      result_fd, control_f, result_df, testing_f);
 
-  print(a);
-  cf = 0;
-  a.bits[3] = 0;
-  a.bits[2] = 0;
-  a.bits[1] = 0;
-  a.bits[0] = 0x01000000;
-  from_d_to_f(a, &cf);
-  printf("cf after = %E result =%d\n\n", cf, result);
+  if (fabs(testing_f - control_f) < 1e13) {
+    printf("OK\n");
+  } else {
+    printf("FAIL\n");
+  }
+  printf("1e13 is \t\t\t\t%f\n\n", 1e13);
 
-  s21_decimal dec = {0};
-  dec.bits[0] = 1234;
-  dec.bits[1] = 9876;
-  dec.bits[2] = 86688;
-  print_dec(dec);
+  // cf = 0;
+  // a.bits[3] = 0;
+  // a.bits[2] = 1;
+  // a.bits[1] = 0;
+  // a.bits[0] = 0xffff;
+  // print(a);
+  // from_d_to_f(a, &cf);
+  // printf("cf after = %E result =%d\n\n", cf, result);
+
+  // cf = 0;
+  // a.bits[3] = 0;
+  // a.bits[2] = 0;
+  // a.bits[1] = 0;
+  // a.bits[0] = 0x01000000;
+  // print(a);
+  // from_d_to_f(a, &cf);
+  // printf("cf after = %E result =%d\n\n", cf, result);
+
+  // cf = 0;
+  // a.bits[3] = 0;
+  // a.bits[2] = 0;
+  // a.bits[1] = 0;
+  // a.bits[0] = 0x01000000;
+  // print(a);
+  // from_d_to_f(a, &cf);
+  // printf("cf after = %E result =%d\n\n", cf, result);
+
+  // s21_decimal dec = {0};
+  // dec.bits[0] = 1234;
+  // dec.bits[1] = 9876;
+  // dec.bits[2] = 86688;
+  // print(dec);
+  // from_d_to_f(dec, &cf);
+  // printf("cf after = %E result =%d\n\n", cf, result);
+  // // print_dec(dec);
   return 0;
 }

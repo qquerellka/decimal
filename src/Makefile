@@ -10,9 +10,13 @@ SOURCE = $(wildcard *.c)
 OBJECTS = $(SOURCE:.c=.o)
 
 # Основные цели
-.PHONY: all clean format_project scan_project_on_format rebuild 
+.PHONY: all clean  rebuild 
 
-all: cp_lib format_project main Float_Parsers Utils $(PROGRAM)
+all: cp_lib main Float_Parsers Utils $(PROGRAM)
+
+# .PHONY: all clean format_project scan_project_on_format rebuild 
+
+# all: cp_lib format_project main Float_Parsers Utils $(PROGRAM)
 
 $(PROGRAM): 
 	$(CC) $(CFLAGS) $(OBJECTS) -o $(PROGRAM) $(LIB) -lm

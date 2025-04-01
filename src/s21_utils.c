@@ -1,8 +1,5 @@
 #include "s21_utils.h"
 
-#include <math.h>
-#include <stdio.h>
-
 int s21_is_float_nan(s21_FloatUint32_t float_box) {
   int is_nan_result = 0;
 
@@ -13,6 +10,7 @@ int s21_is_float_nan(s21_FloatUint32_t float_box) {
   return is_nan_result;
 }
 
+//разбить на 2
 int s21_is_float_zero(s21_FloatUint32_t float_box) {
   int is_zero_result = 0;
 
@@ -32,7 +30,7 @@ int s21_is_float_overflow(double double_value) {
     double_value = -double_value;
   }
 
-  result = (double_value > FLOAT_MAX_VALUE);
+  result = (double_value > S21_MAX);
 
   return result;
 }
@@ -68,106 +66,97 @@ unsigned char s21_get_float_sign(uint32_t float_box) {
   return result_sign;
 }
 
-char s21_get_float_scale(uint32_t float_box) {
-  char result_scale = 0;
-  uint32_t temp_scale = 0;
-
-  temp_scale = float_box & FLOAT_GET_SIGN_MASK;
-  temp_scale >>= FLOAT_MANTISA_BITS;
-  temp_scale -= 127;
-
-  result_scale = (char)temp_scale;
-
-  return result_scale;
+void s21_initialize_decimal_as_zero(s21_decimal *decimal) {
+  for (int i = 0; i < 4; i++) {
+    decimal->bits[i] = 0;
+  }
 }
 
-uint32_t s21_get_float_mantisa(uint32_t float_box) {
-  uint32_t result_mantiss = 0;
+void s21_set_float_mantisa_in_decimal(s21_decimal *dst, uint32_t uint_value) {
+  dst->bits[0] = uint_value;
+}
 
-  result_mantiss = float_box & FLOAT_MANTISA_MASK;
+int s21_is_decimal_not_zero(s21_decimal *decimal) {
+  int result = 0;
 
-  return result_mantiss;
+  for (int i = 0; i < 3; i++) {
+    if (decimal->bits[i]) {
+      result++;
+    }
+  }
+
+  return result;
+}
+
+double s21_convert_decimal_mantisa_to_double(s21_decimal dec) {
+  uint32_t current_bits = 0;
+  int current_bits_index = 0;
+  double converted_value_buffer_result = 0;
+
+  current_bits = dec.bits[0];
+  for (int i = 0; i < 95; i++) {
+    if (i == 32) {
+      current_bits = dec.bits[1];
+      current_bits_index = i - 32;
+    }
+    if (i == 64) {
+      current_bits = dec.bits[2];
+      current_bits_index = i - 64;
+    }
+
+    if ((current_bits >> current_bits_index) & 1) {
+      converted_value_buffer_result += pow(2, i);
+    }
+
+    current_bits_index++;
+  }
+
+  return converted_value_buffer_result;
 }
 
 s21_FloatDescriptor_t s21_get_float_data(s21_FloatUint32_t float_box) {
   s21_FloatDescriptor_t result_descriptor = {0};
+  int scale = 0;
+  uint32_t int_value = 0;
+  double temp_value = 0;
 
   result_descriptor.is_minus_sign = s21_get_float_sign(float_box.uint_value);
   if (result_descriptor.is_minus_sign) {
     float_box.float_value = -float_box.float_value;
   }
 
-  printf("float value = %f\n", float_box.float_value);
+  temp_value = (double)float_box.float_value;
 
-  char sprintf_buffer[16] = {0};
-  double temp_value = 0;
-  sprintf(sprintf_buffer, "%.6E", (double)float_box.float_value);
-
-  sscanf(sprintf_buffer, "%lf", &temp_value);
-
-  printf("value in growth up = %lf\n", temp_value);
-
-  int scale = 0;
-  uint32_t int_value = 0;
-
-  while (temp_value != 0 && temp_value < 1.0) {
+  while (temp_value != 0 && temp_value < 1e6) {
     temp_value *= 10.0;
-
+    //
+    //printf("grow up value is %lf\n", temp_value);
+    //
     scale--;
   }
 
-  while (temp_value >= 10.0) {
+  while (temp_value >= 1e7) {
     temp_value /= 10.0;
-
+    //
+    //printf("grow down value is %lf\n", temp_value);
+    //
     scale++;
   }
 
-  int_value = (uint32_t)(temp_value * 1e6);
-  scale -= 6;
+  int_value = (uint32_t)round(temp_value);
+
+  while (!(int_value % 10)) {
+    int_value /= 10;
+    scale++;
+  }
+
+  printf("double value = %lf & result value = %u & scale = %d\n", temp_value,
+         int_value, scale);
 
   result_descriptor.scale = scale;
   result_descriptor.mantisa = int_value;
 
   return result_descriptor;
-}
-
-void s21_set_float_sign(s21_FloatDescriptor_t *float_descriptor,
-                        uint32_t *dst) {
-  uint32_t tmp_int_map = 0;
-
-  tmp_int_map = *dst;
-
-  if (float_descriptor->is_minus_sign) {
-    tmp_int_map = 1;
-    tmp_int_map <<= FLOAT_SIGN_BIT;
-  }
-
-  *dst = tmp_int_map;
-}
-
-void s21_set_float_scale(s21_FloatDescriptor_t *float_descriptor,
-                         uint32_t *dst) {
-  uint32_t scale_mask = 0;
-
-  scale_mask = float_descriptor->scale;
-
-  scale_mask += FLOAT_SCALE_STEP;
-
-  scale_mask <<= FLOAT_MANTISA_BITS;
-
-  *dst |= scale_mask;
-}
-
-void s21_set_float_mantisa(s21_FloatDescriptor_t *float_descriptor,
-                           uint32_t *dst) {
-  uint32_t mantisa = 0;
-
-  mantisa = float_descriptor->mantisa;
-
-  mantisa <<= FLOAT_MANTISA_SHIFT;
-  mantisa >>= FLOAT_MANTISA_SHIFT;
-
-  *dst |= mantisa;
 }
 
 double s21_get_multiplied_result(double decimal_mantissa_value) {
@@ -178,19 +167,17 @@ double s21_get_frac_result(double decimal_mantissa_value) {
   return (double)decimal_mantissa_value / 10;
 }
 
-void s21_convert_float_descriptor_to_float(
-    s21_FloatDescriptor_t *float_descriptor, s21_FloatUint32_t *float_box) {
-  // int is_scale_negative = 0;
+float s21_convert_float_descriptor_to_float(
+    s21_FloatDescriptor_t *float_descriptor, double double_float_box) {
   int scale = 0;
   double result_value = 0;
   double (*operation)(double) = NULL;
 
-  result_value = (double)float_descriptor->mantisa;
+  result_value = double_float_box;
 
   scale = float_descriptor->scale;
 
   if (scale < 0) {
-    // is_scale_negative = 1;
     scale = -scale;
     operation = s21_get_frac_result;
   } else {
@@ -201,16 +188,9 @@ void s21_convert_float_descriptor_to_float(
     result_value = operation(result_value);
   }
 
-  printf("result %lf\n", result_value);
-
   if (float_descriptor->is_minus_sign) {
     result_value = -result_value;
   }
 
-  float_box->float_value = (float)result_value;
-  // s21_set_float_sign(float_descriptor, &dst->uint_value);
-
-  // s21_set_float_scale(float_descriptor, &dst->uint_value);
-
-  // s21_set_float_mantisa(float_descriptor, &dst->uint_value);
+  return (float)result_value;
 }
