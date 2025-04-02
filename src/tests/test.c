@@ -462,6 +462,12 @@ START_TEST(from_float_to_decimal_decimal_to_float) {
   ck_assert_int_eq(0, output);
 
   res = 0;
+  temp_plus = 1e-29f;
+  res_plus = 0.0f;
+  output = s21_from_float_to_decimal(temp_plus, &temp_res);
+  ck_assert_int_eq(1, output);
+
+  res = 0;
   temp_plus = 0.9f;
   temp_minus = -0.9f;
   res_plus = 0.9f;
@@ -611,7 +617,31 @@ START_TEST(from_float_to_decimal_decimal_to_float) {
   output = s21_from_decimal_to_float(temp_res, NULL);
   ck_assert_int_eq(1, output);
 
-  printf("\nvalue = %e\n",79228162514264337593543950335.0F);
+  temp_res.bits[2] = 0xFFFFFFFF;
+  temp_res.bits[1] = 0xFFFFFFFF;
+  temp_res.bits[0] = 0xFFFFFFFF;
+  s21_set_scale(&temp_res,-29);
+  temp_minus=0;
+  output = s21_from_decimal_to_float(temp_res, &temp_minus);
+  ck_assert_int_eq(1, output);
+
+
+  temp_res.bits[2] = 0xFFFFFFFF;
+  temp_res.bits[1] = 0xFFFFFFFF;
+  temp_res.bits[0] = 0xFFFFFFFF;
+  s21_set_scale(&temp_res,1);
+  temp_minus=0;
+  output = s21_from_decimal_to_float(temp_res, &temp_minus);
+  ck_assert_int_eq(1, output);
+
+  temp_res.bits[2] = 0xFFFFFFFF;
+  temp_res.bits[1] = 0xFFFFFFFF;
+  temp_res.bits[0] = 0xFFFFFFFF;
+  s21_set_scale(&temp_res,0);
+  temp_minus=0;
+  output = s21_from_decimal_to_float(temp_res, &temp_minus);
+  ck_assert_int_eq(0, output);
+
 }
 END_TEST
 

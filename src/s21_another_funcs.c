@@ -132,7 +132,7 @@ int s21_is_float_overflow(double double_value) {
     double_value = -double_value;
   }
 
-  result = (double_value - S21_MAX>1e-1f);
+  result = ((double_value-S21_MAX) > 1e22f);
 
   return result;
 }
@@ -286,6 +286,6 @@ double s21_convert_float_descriptor_to_float(
   }
 
   operation=NULL;
-  
+
   return result_value;
 }
