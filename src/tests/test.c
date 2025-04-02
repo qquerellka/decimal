@@ -411,7 +411,7 @@ START_TEST(from_float_to_decimal_decimal_to_float) {
   float res_minus = -2147484.0;
 
   int output = s21_from_float_to_decimal(temp_plus, &temp_res);
-  ck_assert_int_eq(0, output);
+  ck_assert_int_eq(0, output);//тут то что
   output = s21_from_decimal_to_float(temp_res, &res);
 
   ck_assert(fabs(res_plus - res) < 1.0);
@@ -452,13 +452,13 @@ START_TEST(from_float_to_decimal_decimal_to_float) {
   ck_assert_int_eq(0, output);
   output = s21_from_decimal_to_float(temp_res, &res);
 
-  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert(fabs(res_plus - res) < 5e-5);
   ck_assert_int_eq(0, output);
 
   output = s21_from_float_to_decimal(temp_minus, &temp_res);
   ck_assert_int_eq(0, output);
   output = s21_from_decimal_to_float(temp_res, &res);
-  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert(fabs(res_minus - res) < 5e-5);
   ck_assert_int_eq(0, output);
 
   res = 0;
@@ -471,13 +471,13 @@ START_TEST(from_float_to_decimal_decimal_to_float) {
   ck_assert_int_eq(0, output);
   output = s21_from_decimal_to_float(temp_res, &res);
 
-  ck_assert(fabs(res_plus - res) < 1.0);
+  ck_assert(fabs(res_plus - res) < 5e-8);
   ck_assert_int_eq(0, output);
 
   output = s21_from_float_to_decimal(temp_minus, &temp_res);
   ck_assert_int_eq(0, output);
   output = s21_from_decimal_to_float(temp_res, &res);
-  ck_assert(fabs(res_minus - res) < 1.0);
+  ck_assert(fabs(res_minus - res) < 5e-8);
   ck_assert_int_eq(0, output);
 
   res = 0;
@@ -519,8 +519,8 @@ START_TEST(from_float_to_decimal_decimal_to_float) {
   ck_assert_int_eq(0, output);
 
   res = 0;
-  temp_plus = 0;
-  temp_minus = -0;
+  temp_plus = .0f;
+  temp_minus = -.0f;
   res_plus = 0;
   res_minus = 0;
 
@@ -610,6 +610,8 @@ START_TEST(from_float_to_decimal_decimal_to_float) {
   ck_assert_int_eq(1, output);
   output = s21_from_decimal_to_float(temp_res, NULL);
   ck_assert_int_eq(1, output);
+
+  printf("\nvalue = %e\n",79228162514264337593543950335.0F);
 }
 END_TEST
 

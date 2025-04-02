@@ -38,7 +38,6 @@ else
 endif
 	./test
 
-
 gcov_report: clean
 ifeq ($(OS),Darwin)
 	$(CC) $(FLAGS) $(GCOV_FLAGS) $(FILES) $(TEST_FILES) -o test $(MAC_FLAGS)
@@ -46,11 +45,10 @@ else
 	$(CC) $(FLAGS) $(GCOV_FLAGS) $(FILES) $(TEST_FILES) -o test $(LINUX_FLAGS)
 endif
 	./test
-	rm test
-	lcov -t "s21_test" -o postreport.info -c -d .
-	genhtml -o report postreport.info
+	mkdir report
+	gcov -b -l -p -c report/*.gcno
+	gcovr --html --html-details -o report/index.html
 	$(OPEN) report/index.html
-
 
 style_check:
 	clang-format -i -style=google tests/*.c *.c *.h

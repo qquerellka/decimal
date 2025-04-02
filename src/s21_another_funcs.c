@@ -125,13 +125,14 @@ int s21_is_float_zero(s21_FloatUint32_t float_box) {
 }
 
 int s21_is_float_overflow(double double_value) {
+
   int result = 0;
 
   if (double_value < 0) {
     double_value = -double_value;
   }
 
-  result = (double_value > S21_MAX);
+  result = (double_value - S21_MAX>1e-1f);
 
   return result;
 }
@@ -143,7 +144,7 @@ int s21_is_float_too_small(double double_value) {
     double_value = -double_value;
   }
 
-  result = (int)(double_value < FLOAT_TOO_SMALL);
+  result = (int)((FLOAT_TOO_SMALL-double_value)>0 );//изменено
 
   return result;
 }
@@ -195,7 +196,7 @@ double s21_convert_decimal_mantisa_to_double(s21_decimal dec) {
   double converted_value_buffer_result = 0;
 
   current_bits = dec.bits[0];
-  for (int i = 0; i < 95; i++) {
+  for (int i = 0; i < 96; i++) {
     if (i == 32) {
       current_bits = dec.bits[1];
       current_bits_index = i - 32;
@@ -219,7 +220,6 @@ s21_FloatDescriptor_t s21_get_float_data(s21_FloatUint32_t float_box) {
   s21_FloatDescriptor_t result_descriptor = {0};
   int scale = 0;
   uint32_t int_value = 0;
-  char sprintf_buffer[16] = {0};
   double temp_value = 0;
 
   result_descriptor.is_minus_sign = s21_get_float_sign(float_box.uint_value);
@@ -227,24 +227,24 @@ s21_FloatDescriptor_t s21_get_float_data(s21_FloatUint32_t float_box) {
     float_box.float_value = -float_box.float_value;
   }
 
-  sprintf(sprintf_buffer, "%.6E", (double)float_box.float_value);
+  temp_value = (double)float_box.float_value;
 
-  sscanf(sprintf_buffer, "%lf", &temp_value);
-
-  while (temp_value != 0 && temp_value < 1.0) {
+  while (temp_value != 0 && temp_value < 1e6) {
     temp_value *= 10.0;
-
     scale--;
   }
 
-  while (temp_value >= 10.0) {
+  while (temp_value >= 1e7) {
     temp_value /= 10.0;
-
     scale++;
   }
 
-  int_value = (uint32_t)(temp_value * 1e6);
-  scale -= 6;
+  int_value = (uint32_t)round(temp_value);
+
+  while (!(int_value % 10)) {
+    int_value /= 10;
+    scale++;
+  }
 
   result_descriptor.scale = scale;
   result_descriptor.mantisa = int_value;
@@ -260,8 +260,8 @@ double s21_get_frac_result(double decimal_mantissa_value) {
   return (double)decimal_mantissa_value / 10;
 }
 
-float s21_convert_float_descriptor_to_float(
-    s21_FloatDescriptor_t *float_descriptor, double double_float_box) {
+double s21_convert_float_descriptor_to_float(
+  s21_FloatDescriptor_t *float_descriptor, double double_float_box) {
   int scale = 0;
   double result_value = 0;
   double (*operation)(double) = NULL;
@@ -273,11 +273,11 @@ float s21_convert_float_descriptor_to_float(
   if (scale < 0) {
     scale = -scale;
     operation = s21_get_frac_result;
-  } else {
+  } else if(scale > 0) {
     operation = s21_get_multiplied_result;
   }
 
-  for (int i = 0; i < scale; i++) {
+  for (int i = 0; i < scale && operation; i++) {
     result_value = operation(result_value);
   }
 
@@ -285,5 +285,7 @@ float s21_convert_float_descriptor_to_float(
     result_value = -result_value;
   }
 
-  return (float)result_value;
+  operation=NULL;
+  
+  return result_value;
 }

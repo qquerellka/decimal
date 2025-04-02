@@ -9,7 +9,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define S21_MAX 79228162514264337593543950335.0F
+#define S21_MAX 7.922816e+28f
+//#define S21_MAX 79228162514264337593543950335.0F
 #define S21_MIN -79228162514264337593543950335.0F
 
 #define FLOAT_POSITIVE_NAN_MASK 0x7f800000
@@ -97,7 +98,7 @@ unsigned char s21_get_float_sign(uint32_t float_box);
 s21_FloatDescriptor_t s21_get_float_data(s21_FloatUint32_t float_box);
 double s21_get_multiplied_result(double decimal_mantissa_value);
 double s21_get_frac_result(double decimal_mantissa_value);
-float s21_convert_float_descriptor_to_float(
+double s21_convert_float_descriptor_to_float(
     s21_FloatDescriptor_t *float_descriptor, double double_float_box);
 
 #endif
