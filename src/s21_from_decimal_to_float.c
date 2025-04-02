@@ -1,5 +1,5 @@
 #include "s21_decimal.h"
-
+//изменено
 int s21_from_decimal_to_float(s21_decimal src, float *dst) {
   int result_to_float = 0;
   int is_decimal_not_zero = 0;

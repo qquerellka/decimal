@@ -124,6 +124,7 @@ int s21_is_float_zero(s21_FloatUint32_t float_box) {
   return is_zero_result;
 }
 
+//изменена
 int s21_is_float_overflow(double double_value) {
 
   int result = 0;
@@ -136,7 +137,7 @@ int s21_is_float_overflow(double double_value) {
 
   return result;
 }
-
+//изменена
 int s21_is_float_too_small(double double_value) {
   int result = 0;
 
@@ -189,7 +190,7 @@ int s21_is_decimal_not_zero(s21_decimal *decimal) {
 
   return result;
 }
-
+//изменена
 double s21_convert_decimal_mantisa_to_double(s21_decimal dec) {
   uint32_t current_bits = 0;
   int current_bits_index = 0;
@@ -215,7 +216,7 @@ double s21_convert_decimal_mantisa_to_double(s21_decimal dec) {
 
   return converted_value_buffer_result;
 }
-
+//изменена
 s21_FloatDescriptor_t s21_get_float_data(s21_FloatUint32_t float_box) {
   s21_FloatDescriptor_t result_descriptor = {0};
   int scale = 0;
@@ -260,6 +261,7 @@ double s21_get_frac_result(double decimal_mantissa_value) {
   return (double)decimal_mantissa_value / 10;
 }
 
+//изменена
 double s21_convert_float_descriptor_to_float(
   s21_FloatDescriptor_t *float_descriptor, double double_float_box) {
   int scale = 0;
